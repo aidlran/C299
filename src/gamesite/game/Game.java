@@ -1,16 +1,19 @@
 package gamesite.game;
 
-public class Game {
+abstract class Game {
 
-    private String name;
-    private int numberOfPlayers;
-    private int age;
-    private String description;
-    private String rules;
-    private String demoVideo;
-    private int estimatedTime;
-    private String help;
-    private String fitnessLevel;
-    private String difficulty;
+    protected String name;
+    protected int numberOfPlayers;
+    protected int age;
+    protected String description;
+    protected String rules;
+    protected String demoVideo;
+    protected int estimatedTime;
+    protected String help;
+    protected String fitnessLevel;
+    protected String difficulty;
+
+    abstract void start();
+    abstract void end();
 
 }
