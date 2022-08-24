@@ -1,4 +1,4 @@
-package gamesite.game;
+package gamingplatform.game;
 
 abstract class Game {
 

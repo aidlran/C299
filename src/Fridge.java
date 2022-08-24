@@ -1,5 +1,3 @@
-package fridge;
-
 import java.util.HashMap;
 
 public class Fridge {

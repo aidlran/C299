@@ -1,6 +1,6 @@
-package gamesite.game;
+package gamingplatform.game;
 
-import gamesite.Player;
+import gamingplatform.Player;
 
 public final class NeverHaveIEver extends Game {
 

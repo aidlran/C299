@@ -1,4 +1,4 @@
-package gamesite;
+package gamingplatform;
 
 public class Player {
 
