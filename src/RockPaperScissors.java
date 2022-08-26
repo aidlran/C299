@@ -92,7 +92,6 @@ public class RockPaperScissors {
 	private static int promptForIntegerInput(String prompt, int maxInt) {
 
 		int input;
-		boolean valid = false;
 
 		while (true) {
 
