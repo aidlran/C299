@@ -26,17 +26,17 @@ public class DogGenetics {
 			// + always at least 1% available for all 5 breeds
 			random = RANDOM.nextInt(remainingPercent - (4 - i)) + 1;
 			remainingPercent -= random;
-			printBreedString(random, DOG_BREEDS.get(i));
+			printBreedString(random, i);
 		}
 
 		// For the last dog breed, use remainingPercent to ensure full 100%
-		printBreedString(remainingPercent, DOG_BREEDS.get(4));
+		printBreedString(remainingPercent, 4);
 
 		System.out.println("\nWow, that's QUITE the dog!");
 	}
 
-	private static void printBreedString(int percentage, String breed) {
-		System.out.println(percentage + "% " + breed);
+	private static void printBreedString(int percentage, int breedIndex) {
+		System.out.println(percentage + "% " + DOG_BREEDS.get(breedIndex));
 	}
 
 	/**
