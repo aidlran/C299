@@ -56,7 +56,7 @@ CREATE TABLE author_book (
 	FOREIGN KEY (book_id) REFERENCES book(book_id)
 );
 
-CREATE TABLE BookFormat (
+CREATE TABLE book_format (
 	book_id integer NOT NULL,
 	format_id integer NOT NULL,
 	price numeric(6,2) NULL, -- range: 0.00 to 9999.99
@@ -66,7 +66,7 @@ CREATE TABLE BookFormat (
 	FOREIGN KEY (format_id) REFERENCES format(format_id)
 );
 
-CREATE TABLE BookGenre (
+CREATE TABLE book_genre (
 	book_id integer NOT NULL,
 	genre_id integer NOT NULL,
 	PRIMARY KEY (book_id, genre_id),
