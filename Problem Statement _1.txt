@@ -1,2 +1,0 @@
-Write a program that asks the user for their name and greets them with their name.
-Modify the program such that only the users Biraj and DAS are greeted with their names.
