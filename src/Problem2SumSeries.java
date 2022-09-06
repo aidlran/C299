@@ -20,7 +20,11 @@ public class Problem2SumSeries {
 			String nextLine = SCANNER.nextLine();
 
 			try {
-				return Integer.parseInt(nextLine);
+
+				int n = Integer.parseInt(nextLine);
+
+				if (n < 1) System.out.println("Invalid input. Please enter a positive number.\n");
+				else return n;
 			}
 			catch (Exception ignored) {
 				System.out.println("Invalid input. Please enter an integer.\n");

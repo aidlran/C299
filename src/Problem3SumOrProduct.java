@@ -15,8 +15,8 @@ public class Problem3SumOrProduct {
         System.out.println("\nThe range (1 through n) will be either summed or the product found.");
 
         System.out.println(getInputSumOrProduct()
-            ? "The sum of the range is " + calculateSum(n)
-            : "The product of the range is " + calculateProduct(n));
+            ? "The sum of the range is " + calculateSum(n) + "."
+            : "The product of the range is " + calculateProduct(n) + ".");
 	}
 
 	private static int getInputInteger() {
@@ -28,7 +28,11 @@ public class Problem3SumOrProduct {
 			String nextLine = SCANNER.nextLine();
 
 			try {
-				return Integer.parseInt(nextLine);
+
+				int n = Integer.parseInt(nextLine);
+
+				if (n < 1) System.out.println("Invalid input. Please enter a positive number.\n");
+				else return n;
 			}
 			catch (Exception ignored) {
 				System.out.println("Invalid input. Please enter an integer.\n");
