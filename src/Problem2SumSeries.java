@@ -8,7 +8,7 @@ public class Problem2SumSeries {
 	private static final Scanner SCANNER = new Scanner(System.in);
 
 	public static void main(String[] args) {
-		System.out.println("Your sum is: " + sum(getInput()));
+		System.out.println("Your sum is: " + calculateSum(getInput()));
 	}
 
 	private static int getInput() {
@@ -28,11 +28,11 @@ public class Problem2SumSeries {
 		}
 	}
 
-	private static int sum(int n) {
+	private static int calculateSum(int n) {
 
 		int total = 0;
 
-		for (int i = 1; i < n; i++)
+		for (int i = 1; i <= n; i++)
 			total += i;
 
 		return total;
