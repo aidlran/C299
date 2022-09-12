@@ -14,10 +14,13 @@ public class Problem10PigLatin {
 		String output = "";
 		boolean once = false;
 
-		for (String s : englishString.split(" ")) if (s.trim().length() > 0) {
-			if (once) output += " ";
-			else once = true;
-			output += s.substring(1) + s.charAt(0) + "ay";
+		for (String word : englishString.split(" ")) {
+			word = word.trim();
+			if (word.length() > 0) {
+				if (once) output += " ";
+				else once = true;
+				output += word.substring(1) + word.charAt(0) + "ay";
+			}
 		}
 
 		return output.toLowerCase();
@@ -28,10 +31,14 @@ public class Problem10PigLatin {
 		String output = "";
 		boolean once = false;
 
-		for (String s : pigLatinString.split(" ")) if (s.trim().length() > 0) {
-			if (once) output += " ";
-			else once = true;
-			output += s.charAt(s.length() - 3) + s.substring(0, s.length() - 3);
+		for (String word : pigLatinString.split(" ")) {
+			word = word.trim();
+			int len = word.length();
+			if (len > 0) {
+				if (once) output += " ";
+				else once = true;
+				output += word.charAt(len - 3) + word.substring(0, len - 3);
+			}
 		}
 
 		return output.toLowerCase();
