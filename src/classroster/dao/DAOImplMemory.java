@@ -12,27 +12,27 @@ import classroster.dto.Student;
  */
 public class DAOImplMemory implements DAO {
 
-	private final Map<String, Student> STUDENTS = new HashMap<>();
+	protected final Map<String, Student> STUDENTS = new HashMap<>();
 
 	@Override
-	public Student getStudent(String id) {
+	public Student getStudent(String id) throws DAOException {
 		return STUDENTS.get(id);
 	}
 
 	@Override
-	public Student addStudent(Student student) {
+	public Student addStudent(Student student) throws DAOException {
 		Student existing = getStudent(student.getID());
 		return existing != null ? existing : STUDENTS.put(student.getID(), student);
 	}
 
 	@Override
-	public Student removeStudent(String id) {
+	public Student removeStudent(String id) throws DAOException {
 		Student removed = STUDENTS.remove(id);
 		return removed;
 	}
 
 	@Override
-	public List<Student> getAllStudents() {
+	public List<Student> getAllStudents() throws DAOException {
 		return new ArrayList<Student>(STUDENTS.values());
 	}
 }

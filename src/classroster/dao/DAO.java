@@ -10,7 +10,7 @@ public interface DAO {
      * @param id The ID of a Student in the roster.
      * @return A Student object or NULL if no such Student exists.
      */
-    Student getStudent(String id);
+    Student getStudent(String id) throws DAOException;
 
     /**
      * Adds a Student to the roster.
@@ -18,7 +18,7 @@ public interface DAO {
      * @return If a Student object is already associated with the ID, it is
      * returned, otherwise NULL is returned.
      */
-    Student addStudent(Student student);
+    Student addStudent(Student student) throws DAOException;
 
     /**
      * Removes the Student associated with the ID given from the roster.
@@ -26,10 +26,10 @@ public interface DAO {
      * @return If the Student exists in the roster and is removed, it is returned,
      * otherwise NULL is returned.
      */
-    Student removeStudent(String id);
+    Student removeStudent(String id) throws DAOException;
 
     /**
      * @return A List object with all Students in the roster.
      */
-    List<Student> getAllStudents();
+    List<Student> getAllStudents() throws DAOException;
 }
