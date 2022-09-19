@@ -1,38 +1,42 @@
 package classroster;
 
-import classroster.ui.UserIO;
-import classroster.ui.UserIOConsole;
+import classroster.dao.DAO;
 import classroster.ui.View;
 
 public class Controller {
 
-    private final UserIO IO = new UserIOConsole();
-    private final View VIEW = new View();
+	private DAO dao;
+	private View view;
 
-    public void run() {
-        do {
-            switch (VIEW.displayMenu()) {
-                case 1:
-                    // TODO
-                    IO.print("-> List student IDs");
-                    break;
-                case 2:
-                    // TODO
-                    IO.print("-> Add a new student");
-                    break;
-                case 3:
-                    // TODO
-                    IO.print("-> View a student");
-                    break;
-                case 4:
-                    // TODO
-                    IO.print("-> Remove a student");
-                    break;
-                case 0:
-                    return;
-                default:
-                    IO.print("Unknown command.");
-            }
-        } while (true);
-    }
+	public Controller(DAO dao, View view) {
+		this.dao = dao;
+		this.view = view;
+	}
+
+	public void run() {
+		do {
+			switch (view.displayMenu()) {
+				case 1:
+					view.displayStudentList(dao.getAllStudents());
+					break;
+				case 2:
+					view.displayStudent(dao.getStudent(view.getStudentIDChoice()));
+					break;
+				case 3:
+					if (dao.addStudent(view.getNewStudent()) == null)
+						view.displaySuccessMessage();
+					else view.displayErrorMessage("A student with this ID already exists.");
+					break;
+				case 4:
+					if (dao.removeStudent(view.getStudentIDChoice()) != null)
+						view.displaySuccessMessage();
+					else view.displayErrorMessage("No such student.");
+					break;
+				case 0:
+					return;
+				default:
+					view.displayErrorMessage("Unknown command.");
+			}
+		} while (true);
+	}
 }

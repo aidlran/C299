@@ -2,7 +2,7 @@ package classroster.ui;
 
 import java.util.Scanner;
 
-public class UserIOConsole implements UserIO {
+public class UserIOImplConsole implements UserIO {
 
 	private static final Scanner SCANNER = new Scanner(System.in);
 
@@ -21,6 +21,16 @@ public class UserIOConsole implements UserIO {
 	@Override
 	public void print(String text) {
 		System.out.println(text);
+	}
+
+	@Override
+	public void displaySuccessMessage() {
+		print("Operation successful.");
+	}
+
+	@Override
+	public void displayErrorMessage(String error) {
+		print("Error: " + error);
 	}
 
 	@Override

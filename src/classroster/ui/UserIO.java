@@ -3,6 +3,8 @@ package classroster.ui;
 public interface UserIO {
 
     void print(String text);
+    void displaySuccessMessage();
+    void displayErrorMessage(String error);
 
     String readString(String prompt);
 
