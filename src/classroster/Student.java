@@ -1,4 +1,4 @@
-package classroster.dto;
+package classroster;
 
 public class Student {
 

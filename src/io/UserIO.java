@@ -1,4 +1,4 @@
-package classroster.ui;
+package io;
 
 public interface UserIO {
 

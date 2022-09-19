@@ -1,8 +1,8 @@
-package classroster.ui;
+package classroster;
 
 import java.util.List;
 
-import classroster.dto.Student;
+import io.UserIO;
 
 public class View {
 

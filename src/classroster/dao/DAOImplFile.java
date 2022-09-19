@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.Scanner;
 
-import classroster.dto.Student;
+import classroster.Student;
 
 public class DAOImplFile extends DAOImplMemory {
 

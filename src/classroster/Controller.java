@@ -2,7 +2,6 @@ package classroster;
 
 import classroster.dao.DAO;
 import classroster.dao.DAOException;
-import classroster.ui.View;
 
 public class Controller {
 

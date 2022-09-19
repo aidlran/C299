@@ -2,7 +2,7 @@ package classroster.dao;
 
 import java.util.List;
 
-import classroster.dto.Student;
+import classroster.Student;
 
 public interface DAO {
 

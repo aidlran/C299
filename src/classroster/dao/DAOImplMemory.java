@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import classroster.dto.Student;
+import classroster.Student;
 
 /**
  * In memory DAO implementation.

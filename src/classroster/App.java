@@ -1,8 +1,7 @@
 package classroster;
 
 import classroster.dao.DAOImplFile;
-import classroster.ui.UserIOImplConsole;
-import classroster.ui.View;
+import io.UserIOImplConsole;
 
 public class App {
 
