@@ -1,9 +1,6 @@
 package dvdlibrary.ui;
 
 public interface View {
-    public int display();
-    public void displaySuccessMessage();
-    public void displayErrorMessage(String error);
+    public void render();
     public String getTitle();
-    public String getContent();
 }
