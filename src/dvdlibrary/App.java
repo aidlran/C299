@@ -1,18 +1,17 @@
 package dvdlibrary;
 
+import dvdlibrary.dao.DAOException;
 import dvdlibrary.dao.DAOImplFile;
-import dvdlibrary.ui.MenuMain;
 import io.DataStoreFile;
+import io.UserIO;
 import io.UserIOImplConsole;
 
 public class App {
-
-	private static final Controller CONTROLLER = new Controller(
-		new DAOImplFile(new DataStoreFile("dvd-library.txt")),
-		new MenuMain(new UserIOImplConsole())
-	);
-
-	public static void main(String[] args) {
-		CONTROLLER.run();
+	public static void main(String[] args) throws DAOException {
+		UserIO userIO = new UserIOImplConsole();
+		new Controller(
+			new DAOImplFile(new DataStoreFile("dvd-library.txt")),
+			userIO
+		).run();
 	}
 }

@@ -20,6 +20,16 @@ public class DVD {
 		this.movieTitle = movieTitle;
 	}
 
+	public DVD(DVD dvdToCopy) {
+		this.movieTitle = dvdToCopy.movieTitle;
+		this.releaseDate = dvdToCopy.releaseDate;
+		this.studioName = dvdToCopy.studioName;
+		this.directorName = dvdToCopy.directorName;
+		this.mpaaRating = dvdToCopy.mpaaRating;
+		this.userRating = dvdToCopy.userRating;
+		this.userNote = dvdToCopy.userNote;
+	}
+
 	public String getMovieTitle() {
 		return movieTitle;
 	}
@@ -33,7 +43,7 @@ public class DVD {
 	}
 
 	public String getReleaseDateString() {
-		return RELEASE_DATE_FORMATTER.format(releaseDate);
+		return releaseDate == null ? null : RELEASE_DATE_FORMATTER.format(releaseDate);
 	}
 
 	public void setReleaseDate(Date releaseDate) {
