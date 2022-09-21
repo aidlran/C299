@@ -165,4 +165,19 @@ public class DAOImplFile implements DAO {
 
 		return results;
 	}
+
+	@Override
+	public void removeDVD(int dvdIndex) {
+		DVD_LIBRARY.remove(dvdIndex);
+	}
+
+	@Override
+	public void updateDVD(int dvdIndex, DVD dvd) {
+		DVD_LIBRARY.set(dvdIndex, dvd);
+	}
+
+	@Override
+	public DVD getDVD(int dvdIndex) {
+		return new DVD(DVD_LIBRARY.get(dvdIndex));
+	}
 }
