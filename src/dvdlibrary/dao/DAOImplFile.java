@@ -2,7 +2,9 @@ package dvdlibrary.dao;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import dvdlibrary.dto.DVD;
@@ -125,13 +127,14 @@ public class DAOImplFile implements DAO {
 	}
 
 	@Override
-	public void addDVD(DVD dvd) {
+	public int addDVD(DVD dvd) {
 		DVD_LIBRARY.add(dvd);
+		return DVD_LIBRARY.size() - 1;
 	}
 
 	@Override
-	public void addDVD(String movieName) {
-		DVD_LIBRARY.add(new DVD(movieName));
+	public int addDVD(String movieName) {
+		return addDVD(new DVD(movieName));
 	}
 
 	@Override
@@ -147,5 +150,19 @@ public class DAOImplFile implements DAO {
 			allDVDs[i] = new DVD(DVD_LIBRARY.get(i));
 
 		return allDVDs;
+	}
+
+	public Map<Integer, String> searchDVDs(String query) {
+
+		Map<Integer, String> results = new HashMap<>();
+
+		DVD currentDVD = null;
+		for (int i = 0; i < DVD_LIBRARY.size(); i++) {
+			currentDVD = DVD_LIBRARY.get(i);
+			if (currentDVD.getMovieTitle().toLowerCase().contains(query.toLowerCase()))
+				results.put(i, currentDVD.getMovieTitle());
+		}
+
+		return results;
 	}
 }
