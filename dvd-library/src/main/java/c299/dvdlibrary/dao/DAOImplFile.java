@@ -1,4 +1,4 @@
-package dvdlibrary.dao;
+package c299.dvdlibrary.dao;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import dvdlibrary.dto.DVD;
-import dvdlibrary.dto.DVDDateParseException;
-import dvdlibrary.dto.MPAARatingParseException;
-import io.DataStoreException;
-import io.DataStoreFile;
+import c299.dvdlibrary.dto.DVD;
+import c299.dvdlibrary.dto.DVDDateParseException;
+import c299.dvdlibrary.dto.MPAARatingParseException;
+import c299.io.DataStoreException;
+import c299.io.DataStoreFile;
 
 public class DAOImplFile implements DAO {
 

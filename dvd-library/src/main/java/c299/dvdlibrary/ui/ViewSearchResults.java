@@ -1,8 +1,8 @@
-package dvdlibrary.ui;
+package c299.dvdlibrary.ui;
 
 import java.util.Map;
 
-import io.UserIO;
+import c299.io.UserIO;
 
 public class ViewSearchResults extends ViewImpl {
 

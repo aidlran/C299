@@ -1,4 +1,4 @@
-package dvdlibrary.dto;
+package c299.dvdlibrary.dto;
 
 public enum MPAARating {
 

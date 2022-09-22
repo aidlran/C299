@@ -1,4 +1,4 @@
-package dvdlibrary.dto;
+package c299.dvdlibrary.dto;
 
 /**
  * An Exception raised when attempting to parse a bad MPAA rating.

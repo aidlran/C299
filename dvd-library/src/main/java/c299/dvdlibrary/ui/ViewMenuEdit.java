@@ -1,7 +1,7 @@
-package dvdlibrary.ui;
+package c299.dvdlibrary.ui;
 
-import dvdlibrary.dto.DVD;
-import io.UserIO;
+import c299.dvdlibrary.dto.DVD;
+import c299.io.UserIO;
 
 public class ViewMenuEdit extends ViewImpl {
 

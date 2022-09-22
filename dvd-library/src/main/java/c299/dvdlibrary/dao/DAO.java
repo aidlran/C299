@@ -1,8 +1,8 @@
-package dvdlibrary.dao;
+package c299.dvdlibrary.dao;
 
 import java.util.Map;
 
-import dvdlibrary.dto.DVD;
+import c299.dvdlibrary.dto.DVD;
 
 public interface DAO {
     public void init() throws DAOException;
