@@ -1,0 +1,5 @@
+Bubblegum::50::15
+Coca-cola::140::8
+Lays::100::11
+Snickers::90::10
+Tango::130::4
