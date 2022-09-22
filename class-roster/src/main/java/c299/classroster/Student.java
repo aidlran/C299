@@ -1,4 +1,4 @@
-package classroster;
+package c299.classroster;
 
 public class Student {
 

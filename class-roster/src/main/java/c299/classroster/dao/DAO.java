@@ -1,8 +1,8 @@
-package classroster.dao;
+package c299.classroster.dao;
 
 import java.util.List;
 
-import classroster.Student;
+import c299.classroster.Student;
 
 public interface DAO {
 

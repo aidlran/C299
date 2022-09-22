@@ -1,4 +1,4 @@
-package classroster.dao;
+package c299.classroster.dao;
 
 /**
  * An Exception raised by the DAO.

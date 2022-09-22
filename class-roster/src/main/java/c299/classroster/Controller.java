@@ -1,7 +1,7 @@
-package classroster;
+package c299.classroster;
 
-import classroster.dao.DAO;
-import classroster.dao.DAOException;
+import c299.classroster.dao.DAO;
+import c299.classroster.dao.DAOException;
 
 public class Controller {
 
