@@ -4,15 +4,18 @@ import c299.io.UserIO;
 import c299.vendingmachine.dao.DAO;
 import c299.vendingmachine.dao.DAOException;
 import c299.vendingmachine.dto.Change;
+import c299.vendingmachine.dto.Item;
 import c299.vendingmachine.ui.ViewImpl;
 import c299.vendingmachine.ui.ViewMenuCoinInsert;
 import c299.vendingmachine.ui.ViewMenuMain;
+import c299.vendingmachine.ui.ViewMenuProductSelect;
 
 public class Controller {
 
 	private enum Menu {
 		MAIN,
-		COIN_INSERT
+		COIN_INSERT,
+		PRODUCT_SELECT
 	};
 
 	private DAO dao;
@@ -29,7 +32,8 @@ public class Controller {
 
 	public void run() {
 		do {
-			view.printItemList(dao.getAllItems());
+			Item[] allItems = dao.getAllItems();
+			view.printItemList(allItems, currentMenu == Menu.PRODUCT_SELECT);
 			view.render();
 			view.print("");
 			view.printCredit(credit);
@@ -40,6 +44,9 @@ public class Controller {
 						break;
 					case COIN_INSERT:
 						runCoinInsert();
+						break;
+					case PRODUCT_SELECT:
+						runProductSelect(allItems);
 						break;
 					default:
 						return;
@@ -61,7 +68,10 @@ public class Controller {
 				currentMenu = Menu.COIN_INSERT;
 				return;
 			case 2:
-				view.print("Not implemented");
+				if (credit > 0) {
+					view = new ViewMenuProductSelect(userIO);
+					currentMenu = Menu.PRODUCT_SELECT;
+				} else view.displayErrorMessage("No credit.");
 				break;
 			default:
 				view.displayErrorMessage("Unknown command.");
@@ -73,6 +83,7 @@ public class Controller {
 		switch (input) {
 			case 0:
 				view = new ViewMenuMain(userIO);
+				currentMenu = Menu.MAIN;
 				return;
 			case Change.PENNY:
 			case Change.NICKEL:
@@ -83,5 +94,24 @@ public class Controller {
 			default:
 				view.displayErrorMessage("Unknown command.");
 		}
+	}
+
+	private void runProductSelect(Item[] itemList) {
+		Item product = itemList[view.readInt("\nEnter your choice", 0, itemList.length) - 1];
+		if (product.getQuantity() < 1)
+			view.displayErrorMessage("No " + product.getName() + " remaining. Sorry.");
+		else if (credit >= product.getPrice()) {
+			product.decrementQuantity();
+			Change change = new Change(credit -= product.getPrice());
+			view.print("Thank you for your purchase of: " + product.getName());
+			view.print("Your change:");
+			if (change.getQuarters() > 0) view.print("Quarters: " + change.getQuarters());
+			if (change.getDimes() > 0) view.print("Dimes: " + change.getDimes());
+			if (change.getNickels() > 0) view.print("Nickels: " + change.getNickels());
+			if (change.getPennies() > 0) view.print("Pennies: " + change.getPennies());
+			credit = 0;
+			view = new ViewMenuMain(userIO);
+			currentMenu = Menu.MAIN;
+		} else view.displayErrorMessage("Insufficient funds.");
 	}
 }

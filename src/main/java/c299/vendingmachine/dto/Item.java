@@ -10,4 +10,8 @@ public @Data class Item {
     private int price;
     private String name;
     private int quantity;
+
+    public void decrementQuantity() {
+        quantity--;
+    }
 }

@@ -69,7 +69,7 @@ public abstract class ViewImpl implements View, UserIO {
 		return dollars > 0
 
 			// Printed if >= $1
-			? "$" + dollars + "." + (pennies < 10 ? pennies + "0" : pennies)
+			? "$" + dollars + (pennies == 0 ? "" : "." + pennies + (pennies < 10 ? "0" : ""))
 
 			// Printed if < $1
 			: pennies + "c";
@@ -80,10 +80,12 @@ public abstract class ViewImpl implements View, UserIO {
 		print("Credit: " + getCreditString(credit));
 	}
 
-	public void printItemList(Item[] itemList) {
+	public void printItemList(Item[] itemList, boolean printIDs) {
+
+		print("\n--------");
 		print("Products");
 		print("--------\n");
-        for (Item item : itemList)
-			print(item.getName() + " - " + getCreditString(item.getPrice()) + " - " + item.getQuantity() + " remaining.");
+        for (int i = 0; i < itemList.length; i++)
+			print((printIDs ? (i + 1) + ": " : "") + itemList[i].getName() + " - " + getCreditString(itemList[i].getPrice()) + " - " + itemList[i].getQuantity() + " remaining.");
 	}
 }

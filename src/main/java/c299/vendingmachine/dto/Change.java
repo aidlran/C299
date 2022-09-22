@@ -29,21 +29,32 @@ public class Change {
 		public int getValue() {
 			return value;
 		}
+
+		public static Coin[] valuesOrdered() {
+			Coin[] values = {QUARTER, DIME, NICKEL, PENNY};
+			return values;
+		}
 	}
 
 	// Each change object uses a hashmap that has a count of each coin type
 	private Map<Coin, Integer> changeMap;
 
-	public Change(int pennies) {
+	public Change(int pennies) {	
 
 		changeMap = new HashMap<>();
 		int quotient;
 
-		for (Coin coin : Coin.values()) {
-			quotient = pennies / coin.value;
-			changeMap.put(coin, quotient);
-			pennies -= quotient * coin.value;
+		Coin[] coins = Coin.valuesOrdered();
+
+		// Calculating quarters, nickels & dimes
+		for (int i = 0; i < 3; i++) {
+			quotient = pennies / coins[i].value;
+			changeMap.put(coins[i], quotient);
+			pennies -= quotient * coins[i].value;
 		}
+
+		// Remaining pennies
+		changeMap.put(coins[3], pennies);
 	}
 
 	public int getPennies() {
