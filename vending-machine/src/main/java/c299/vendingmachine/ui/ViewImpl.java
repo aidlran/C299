@@ -63,20 +63,27 @@ public abstract class ViewImpl implements View, UserIO {
 		io.print(underline);
 	}
 
+	private String getCreditString(int credit) {
+		int dollars = credit / 100;
+		int pennies = credit % 100;
+		return dollars > 0
+
+			// Printed if >= $1
+			? "$" + dollars + "." + (pennies < 10 ? pennies + "0" : pennies)
+
+			// Printed if < $1
+			: pennies + "c";
+
+	}
+
+	public void printCredit(int credit) {
+		print("Credit: " + getCreditString(credit));
+	}
+
 	public void printItemList(Item[] itemList) {
 		print("Products");
 		print("--------\n");
-        for (Item item : itemList) {
-			int dollars = item.getPrice() / 100;
-			int pennies = item.getPrice() % 100;
-			String priceString = dollars > 0
-
-				// Printed if >= $1
-				? "$" + dollars + "." + (pennies < 10 ? pennies + "0" : pennies)
-
-				// Printed if < $1
-				: pennies + "c";
-			print(item.getName() + " - " + priceString + " - " + item.getQuantity() + " remaining.");
-		}
+        for (Item item : itemList)
+			print(item.getName() + " - " + getCreditString(item.getPrice()) + " - " + item.getQuantity() + " remaining.");
 	}
 }

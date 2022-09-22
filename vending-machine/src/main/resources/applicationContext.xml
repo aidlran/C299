@@ -31,6 +31,7 @@
 
 	<bean id="controller" class="c299.vendingmachine.Controller">
 		<constructor-arg ref="dao"/>
+		<constructor-arg ref="userIO"/>
 		<constructor-arg ref="view"/>
 	</bean>
    
