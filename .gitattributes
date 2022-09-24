@@ -1,2 +1,7 @@
+# Normalise line endings
+* text=auto
+
+# Include in language stats
+*.puml linguist-detectable=true
 *.sql linguist-detectable=true
 *.xml linguist-detectable=true
