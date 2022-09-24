@@ -1,0 +1,92 @@
+' This file is used by PlantUML to generate the associated PNG image.
+
+@startuml entity-relationship-diagram
+
+'''''''''''''''''''''
+' PLANTUML SETTINGS '
+'''''''''''''''''''''
+
+' hide the spot
+hide circle
+
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+''''''''''
+' TABLES '
+''''''''''
+
+entity user_account {
+	* **id : serial : <<PK>>**
+	* **username : text : <<U>>**
+	--
+	* password_hash : text
+	* date_of_birth : date
+	--
+	* added : timestamp : now()
+	* updated : timestamp : now()
+}
+
+entity subscription {
+	* **id : serial : <<PK>>**
+	--
+	* label : text
+}
+
+entity user_subscription {
+	* **user_id : int : <<PK>> <<FK>>**
+	* **subscription_id : int : <<FK>>**
+	--
+	* started : timestamp : now()
+	* expiration : timestamp
+}
+
+entity series {
+	* **id : serial: <<PK>>**
+	--
+	* title : text
+}
+
+entity season {
+	* **id : serial : <<PK>>**
+	* **series_id : int : <<FK>> <<U>>**
+	**order : int : <<U>>**
+	--
+	title : text
+}
+
+entity episode {
+	* **id : serial : <<PK>>**
+	* **season_id : int : <<FK>> <<U>>**
+	**order : int : <<U>>**
+	--
+	* inode : int : <<U>>
+	* is_movie : boolean
+	age_rating : smallint
+	title : text
+	release_date : date
+	--
+	* added : timestamp : now()
+}
+
+entity user_episode_rating {
+	* **user_id : int : <<PK>> <<FK>>**
+	* **episode_id : int : <<PK>> <<FK>>**
+	--
+	* rating : smallint
+}
+
+'''''''''''''''''
+' RELATIONSHIPS '
+'''''''''''''''''
+
+user_account ||--o| user_subscription
+subscription ||--o{ user_subscription
+
+episode      ||--o{ user_episode_rating
+user_account ||--o{ user_episode_rating
+
+series ||--o{ season
+season ||--o{ episode
+
+@enduml
