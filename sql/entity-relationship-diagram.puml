@@ -1,0 +1,91 @@
+' This file is used by PlantUML to generate the associated PNG image.
+
+@startuml entity-relationship-diagram
+
+'''''''''''''''''''''
+' PLANTUML SETTINGS '
+'''''''''''''''''''''
+
+' hide the spot
+hide circle
+
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+''''''''''
+' TABLES '
+''''''''''
+
+entity character {
+	* **id : serial : <<PK>>**
+	* **type_id : smallint : <<FK>>**
+	**contact_details_id : int : <<FK>>**
+	--
+	* name : text
+	description : text
+	superpower : text
+}
+
+entity character_type {
+	* **id : smallserial : <<PK>>**
+	--
+	* name : citext
+}
+
+entity contact_details {
+	* **id : serial : <<PK>>**
+	**location_id : int : <<FK>>**
+	--
+	phone_number : text
+	email_address : text
+}
+
+entity location {
+	* **id : serial : <<PK>>**
+	--
+	* name : text
+	description : text
+	street : text
+	postal_code : text
+	co-ordinates : point
+}
+
+entity organisation {
+	* **id : serial : <<PK>>**
+	**contact_details_id : int : <<FK>>**
+	--
+	* name : text
+	description : text
+}
+
+entity organisation_member {
+	* **organisation_id : int : <<PK>> <<FK>>**
+	* **character_id : int : <<PK>> <<FK>>**
+}
+
+entity sighting {
+	* **id : serial : <<PK>>**
+	* **character_id : int : <<FK>>**
+	* **location_id : int : <<FK>>**
+	--
+	* timestamp : timestamp
+	description : text
+}
+
+'''''''''''''''''
+' RELATIONSHIPS '
+'''''''''''''''''
+
+character_type  ||--o{ character
+
+contact_details ||--o| location
+contact_details ||--|{ character
+contact_details ||--|{ organisation
+
+organisation_member }o--|| character
+organisation_member }o--|| organisation
+
+sighting }o--|| character
+sighting }o--|| location
+
+@enduml
