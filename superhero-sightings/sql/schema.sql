@@ -4,9 +4,12 @@ CREATE DATABASE c299_superhero_sightings;
 
 \connect c299_superhero_sightings;
 
+-- For case insensitive text
+CREATE EXTENSION IF NOT EXISTS citext;
+
 CREATE TABLE IF NOT EXISTS character_type (
 	id SMALLSERIAL NOT NULL PRIMARY KEY,
-	name TEXT NOT NULL
+	name CITEXT NOT NULL
 );
 
 INSERT INTO character_type (name) VALUES

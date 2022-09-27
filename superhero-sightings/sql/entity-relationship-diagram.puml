@@ -29,7 +29,7 @@ entity character {
 entity character_type {
 	* **id : smallserial : <<PK>>**
 	--
-	* name : text
+	* name : citext
 }
 
 entity contact_details {
