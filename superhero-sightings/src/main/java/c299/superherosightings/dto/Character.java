@@ -10,6 +10,7 @@ public abstract class Character {
         VILLAIN
     };
 
+    private int id;
     private String name;
     private String description;
     private String superpower;
