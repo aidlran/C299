@@ -44,38 +44,38 @@ class App
 
 io.UserIO <|-- io.UserIOImplConsole
 
-io.DataStoreFile .. io.DataStoreException
+io.DataStoreFile ..|> io.DataStoreException : <<throws>>
 
 controller.Controller <|-- controller.ControllerImpl
 controller.ControllerImpl <|-- controller.ControllerCore
 controller.ControllerImpl <|-- controller.ControllerMainMenu
 controller.ControllerImpl <|-- controller.ControllerOrderMenu
-controller.Controller --* controller.ControllerCore
-controller.ControllerImpl *-- ui.View
-controller.ControllerImpl *-- io.UserIO
-controller.ControllerImpl *-- service.ServiceLayer
+controller.ControllerCore "1" o-- "1" controller.Controller
+controller.ControllerImpl "1" o-- "1" ui.View
+controller.ControllerImpl "1" o-- "1" io.UserIO
+controller.ControllerImpl "1" o-- "1" service.ServiceLayer
 
 dao.DAO <|-- dao.DAOImplFile
-dao.DAO .. dao.DAOException
-dao.DAOImplFile *-- io.DataStoreFile
-dao.DAOImplFile *-- dto.Order
-dao.DAOImplFile *-- dto.StateTax
-dao.DAOImplFile *-- dto.Product
+dao.DAO ..|> dao.DAOException : <<throws>>
+dao.DAOImplFile "1" *-- "3" io.DataStoreFile
+dao.DAOImplFile "1" *-- "0..*" dto.Order
+dao.DAOImplFile "1" *-- "0..*" dto.StateTax
+dao.DAOImplFile "1" *-- "0..*" dto.Product
 
-service.ServiceLayer .. dao.DAOException
-service.ServiceLayer .. service.InvalidDateStringException
-service.ServiceLayer .. service.InvalidOrderException
+service.ServiceLayer ..|> dao.DAOException : <<throws>>
+service.ServiceLayer ..|> service.InvalidDateStringException : <<throws>>
+service.ServiceLayer ..|> service.InvalidOrderException : <<throws>>
 service.ServiceLayer <|-- service.ServiceLayerImpl
-service.ServiceLayer *-- dao.DAO
+service.ServiceLayer "1" o-- "1" dao.DAO
 
 ui.ViewImpl --|> ui.View
-ui.ViewImpl *-- io.UserIO
+ui.ViewImpl "1" o-- "1" io.UserIO
 ui.ViewImpl <|-- ui.ViewMenuMain
 ui.ViewImpl <|-- ui.ViewOrder
 ui.ViewImpl <|-- ui.ViewListOrders
-ui.ViewListOrders *-- dto.Order
-ui.ViewOrder *-- dto.Order
+ui.ViewListOrders "1" *-- "1..*" dto.Order
+ui.ViewOrder "1" *-- "1" dto.Order
 
-App -- controller.Controller
+App ..|> controller.Controller
 
 @enduml
