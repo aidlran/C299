@@ -14,10 +14,12 @@ public class ViewListOrders extends ViewImpl {
         this.orders = orders;
     }
 
+    @Override
     public String getTitle() {
         return "Listing Orders";
     }
 
+    @Override
     public void render() {
         for (Order order : orders) {
             new ViewOrder(io, order).displayOrder();

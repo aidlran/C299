@@ -8,6 +8,7 @@ public class ViewMenuMain extends ViewImpl {
 		super(io);
 	}
 
+	@Override
 	public String getTitle() {
 		return "Main Menu";
 	}

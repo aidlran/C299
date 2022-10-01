@@ -301,6 +301,4 @@ public class DAOImplFile implements DAO{
 
 		scanner.close();
 	}
-
-	// Order file
 }

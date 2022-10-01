@@ -12,10 +12,12 @@ public class ViewOrder extends ViewImpl {
         this.order = order;
     }
 
+    @Override
     public String getTitle() {
         return "Order " + order.getOrderNumber();
     }
 
+    @Override
     public void render() {
         super.render();
         displayOrder();
