@@ -1,0 +1,81 @@
+@startuml class-diagram
+
+' IO package
+interface io.UserIO
+class io.UserIOImplConsole
+class io.DataStoreFile
+Class io.DataStoreException
+
+' Controller package
+interface controller.Controller
+abstract class controller.ControllerImpl
+class controller.ControllerCore
+class controller.ControllerMainMenu
+class controller.ControllerOrderMenu
+
+' DAO package
+interface dao.DAO
+class dao.DAOImplFile
+class dao.DAOException
+
+' DTO package
+class dto.Order
+class dto.Product
+class dto.StateTax
+' enum dto.StateTaxEnum
+
+' Service package
+class service.InvalidDateStringException
+class service.InvalidOrderException
+interface service.ServiceLayer
+class service.ServiceLayerImpl
+
+' UI package
+interface ui.View
+abstract class ui.ViewImpl
+class ui.ViewMenuMain
+class ui.ViewOrder
+class ui.ViewListOrders
+
+' App
+class App
+
+' Relationships
+
+io.UserIO <|-- io.UserIOImplConsole
+
+io.DataStoreFile .. io.DataStoreException
+
+controller.Controller <|-- controller.ControllerImpl
+controller.ControllerImpl <|-- controller.ControllerCore
+controller.ControllerImpl <|-- controller.ControllerMainMenu
+controller.ControllerImpl <|-- controller.ControllerOrderMenu
+controller.Controller --* controller.ControllerCore
+controller.ControllerImpl *-- ui.View
+controller.ControllerImpl *-- io.UserIO
+controller.ControllerImpl *-- service.ServiceLayer
+
+dao.DAO <|-- dao.DAOImplFile
+dao.DAO .. dao.DAOException
+dao.DAOImplFile *-- io.DataStoreFile
+dao.DAOImplFile *-- dto.Order
+dao.DAOImplFile *-- dto.StateTax
+dao.DAOImplFile *-- dto.Product
+
+service.ServiceLayer .. dao.DAOException
+service.ServiceLayer .. service.InvalidDateStringException
+service.ServiceLayer .. service.InvalidOrderException
+service.ServiceLayer <|-- service.ServiceLayerImpl
+service.ServiceLayer *-- dao.DAO
+
+ui.ViewImpl --|> ui.View
+ui.ViewImpl *-- io.UserIO
+ui.ViewImpl <|-- ui.ViewMenuMain
+ui.ViewImpl <|-- ui.ViewOrder
+ui.ViewImpl <|-- ui.ViewListOrders
+ui.ViewListOrders *-- dto.Order
+ui.ViewOrder *-- dto.Order
+
+App -- controller.Controller
+
+@enduml
