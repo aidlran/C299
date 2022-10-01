@@ -1,41 +1,249 @@
 @startuml class-diagram
 
 ' IO package
-interface io.UserIO
-class io.UserIOImplConsole
-class io.DataStoreFile
-Class io.DataStoreException
+
+interface io.UserIO {
+	+ print(String text) : void
+	+ displaySuccessMessage() : void
+	+ displayErrorMessage(String error) : void
+	+ readString(String prompt) : String
+	+ readInt(String prompt) : int
+	+ readInt(String prompt, int min, int max) : int
+	+ readLong(String prompt) : long
+	+ readLong(String prompt, long min, long max) : long
+	+ readDouble(String prompt) : double
+	+ readDouble(String prompt, double min, double max) : double
+}
+
+class io.UserIOImplConsole {
+	- **SCANNER : Scanner**
+	__
+	- printInputTypeErrorMessage(String desiredInputType) : void
+	- printInputRangeErrorMessage(String desiredInputType, String min, String max) : void
+	- prompt(String prompt) : void
+}
+
+class io.DataStoreFile {
+	- file : File
+	__
+	+ init() : boolean
+	+ getReader() : Scanner
+	+ getWriter() : PrintWriter
+	..Constructor..
+	+ DataStoreFile(String fileName)
+}
+
+Class io.DataStoreException {
+	..Constructors..
+	+ DataStoreException(String error)
+	+ DataStoreException(String error, Throwable cause)
+}
 
 ' Controller package
-interface controller.Controller
-abstract class controller.ControllerImpl
-class controller.ControllerCore
-class controller.ControllerMainMenu
-class controller.ControllerOrderMenu
+
+interface controller.Controller {
+	+ run() : Controller
+}
+
+abstract class controller.ControllerImpl {
+	- view : ViewImpl
+	- userIO : UserIO
+	- service : ServiceLayer
+	..Constructor..
+	+ ControllerImpl(ServiceLayer service, UserIO userIO, ViewImpl view)
+}
+
+class controller.ControllerCore {
+	- activeController : Controller
+	__
+	- loadAllData() : void
+	..Constructor..
+	+ ControllerCore(ServiceLayer service, UserIO userIO, ViewImpl view, Controller controller)
+}
+
+class controller.ControllerMainMenu {
+	- getOrderNumber() : Integer
+	- getEditedOrder(Order order) : Order
+	- editOrder() : void
+	- removeOrder() : void
+	- exportAllData() : void
+	- saveAllData() : void
+	- displayAllOrders() : void
+	- getDateInput() : String
+	- addOrder() : void
+	- searchOrdersByDate() : void
+	..Constructor..
+	+ ControllerMainMenu(ServiceLayer service, UserIO userIO, ViewImpl view)
+}
+
+class controller.ControllerOrderMenu {
+	- order : Order
+	__
+	..Constructor..
+	+ ControllerOrderMenu(ServiceLayer service, UserIO userIO, ViewImpl view, Order order)
+}
 
 ' DAO package
-interface dao.DAO
-class dao.DAOImplFile
-class dao.DAOException
+
+interface dao.DAO {
+	+ hasOrder(int orderNumber) : boolean
+	+ getOrder(int orderNumber) : Order
+	+ getAllOrders() : List<Order>
+	+ addOrder(Order order) : Order
+	+ editOrder(int orderNumber, Order newOrder) : Order
+	+ removeOrder(int orderNumber) : Order
+	+ loadAllData() : void
+	+ saveOrders() : void
+	+ exportOrders() : void
+	+ getStateTax(String state) : StateTax
+	+ getProduct(String productType) : Product
+}
+
+class dao.DAOImplFile {
+	- **BASE_DIR, DATA_DIR, ORDER_DIR, BACKUP_DIR : String**
+	- **DELIMITER : String**
+	- **ORDER_HEADER_LABELS : String[]**
+	__
+	- FILE_STATIC_TAXES : DataStoreFile
+	- FILE_PRODUCTS : DataStoreFile
+	- FILE_EXPORT : DataStoreFile
+	- MAP_ORDERS : Map<Integer, Order>
+	- MAP_STATE_TAXES : Map<String, StateTax>
+	- MAP_PRODUCTS : Map<String, Product>
+	__
+	- getOrderFiles() : List<File>
+	- loadOrders() : void
+	- marshallOrder(Order order) : String
+	- unmarshallOrder(String orderEntryText) : Order
+	- unmarshallTax(String taxEntryText) : StateTax
+	- loadStateTaxes() : void
+	- unmarshallProduct(String productEntryText) : Product
+	- loadProducts() : void
+
+}
+
+class dao.DAOException {
+	..Constructors..
+	+ DAOException(String error)
+	+ DAOException(String error, Throwable cause)
+}
 
 ' DTO package
-class dto.Order
-class dto.Product
-class dto.StateTax
-' enum dto.StateTaxEnum
+
+class dto.Order {
+	- orderNumber : int
+	- customerName : String
+	- state : String
+	- taxRate : BigDecimal
+	- productType : String
+	- area : BigDecimal
+	- costPerSquareFoot : BigDecimal
+	- laborCostPerSquareFoot : BigDecimal
+	- materialCost : BigDecimal
+	- laborCost : BigDecimal
+	- tax : BigDecimal
+	- total : BigDecimal
+	- date : String
+	__
+	@EqualsAndHashCode
+	@Getter
+	@Setter
+	..Constructor..
+	+ Order(int orderNumber)
+}
+
+class dto.Product {
+	- productType : String
+	- costPerSquareFoot : BigDecimal
+	- laborCostPerSquareFoot : BigDecimal
+	__
+	@AllArgsConstructor
+	@Getter
+}
+
+class dto.StateTax {
+	- stateCode : String
+	- stateName : String
+	- taxRate : BigDecimal
+	__
+	@AllArgsConstructor
+	@Getter
+}
 
 ' Service package
-class service.InvalidDateStringException
-class service.InvalidOrderException
-interface service.ServiceLayer
-class service.ServiceLayerImpl
+
+class service.InvalidDateStringException {
+	..Constructors..
+	+ InvalidDateStringException(String error)
+	+ InvalidDateStringException(String error, Throwable cause)
+}
+
+class service.InvalidOrderException {
+	..Constructors..
+	+ InvalidOrderException(String error)
+	+ InvalidOrderException(String error, Throwable cause)
+}
+
+interface service.ServiceLayer {
+	+ loadAllData() : void
+	+ saveAllData() : void
+	+ exportAllData() : void
+	+ getOrder(int orderNumber) : Order
+	+ getAllOrders() : List<Order>
+	+ getOrders(String dateString) : List<Order>
+	+ addOrder(Order order) throws InvalidOrderException;
+	+ removeOrder(int orderNumber) : Order
+	+ editOrder(int orderNumber, Order newOrder) : Order
+	+ convertDateStringToDate(String dateString) : Date
+	+ convertDateToDateString(Date date) : String
+	+ validateDateString(String dateString) : boolean
+	+ validateCustomerName(String customerName) : boolean
+	+ validateStateCode(String stateCode) : boolean
+	+ validateProduct(String product) : boolean
+	+ validateArea(BigDecimal area) : boolean
+	+ validateOrder(Order order) : boolean
+	+ getNextOrderNumber() : int
+}
+
+class service.ServiceLayerImpl {
+	- **DATE_FORMATTER : SimpleDateFormat**
+	- dao : DAO
+	- greatestOrderNumber : int
+	__
+	- recalculateOrder(Order order)
+	..Constructor..
+	+ ServiceLayerImpl(DAO dao)
+}
 
 ' UI package
-interface ui.View
-abstract class ui.ViewImpl
-class ui.ViewMenuMain
-class ui.ViewOrder
-class ui.ViewListOrders
+interface ui.View {
+	+ render() : void
+	+ getTitle() : String
+}
+
+abstract class ui.ViewImpl {
+	- io : UserIO
+}
+
+class ui.ViewMenuMain {
+	- displayMenu : void
+	..Constructor..
+	+ ViewMenuMain(UserIO io)
+}
+
+class ui.ViewOrder {
+	- order : Order
+	__
+	- displayOrder() : void
+	..Constructor..
+	+ ViewOrder(UserIO io, Order order)
+}
+
+class ui.ViewListOrders {
+	- orders : List<Order>
+	..Constructor..
+	+ ViewListOrders(UserIO io, List<Order> orders)
+}
 
 ' App
 class App
@@ -51,7 +259,7 @@ controller.ControllerImpl <|-- controller.ControllerCore
 controller.ControllerImpl <|-- controller.ControllerMainMenu
 controller.ControllerImpl <|-- controller.ControllerOrderMenu
 controller.ControllerCore "1" o-- "1" controller.Controller
-controller.ControllerImpl "1" o-- "1" ui.View
+controller.ControllerImpl "1" o-- "1" ui.ViewImpl
 controller.ControllerImpl "1" o-- "1" io.UserIO
 controller.ControllerImpl "1" o-- "1" service.ServiceLayer
 
