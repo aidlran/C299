@@ -1,4 +1,4 @@
-:: Run tests on Windows
+:: Set up the DB on Windows
 
 :: Windows versions of scripts are untested
 
