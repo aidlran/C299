@@ -1,5 +1,19 @@
 # Guess the Number REST Service
 
+This is a REST service for a guess the number game built using Spring Boot Web.
+
+## Set Up
+
+You can use the shell scripts to set up the database prior to running the application and/or to run the tests. The test script will create the test database and delete it when it is done. The scripts rely on Maven and PostgreSQL being installed on the system and binaries properly added to the system path.
+
+If the scripts aren't working for you then you can create the databases `c299_guess_the_number` and `c299_guess_the_number_test` manually and run the `sql/schema.sql` script on these databases to set up tables and relations.
+
+Don't forget to modify `src/*/resources/application.properties` to supply your database username and password if you need to.
+
+---
+
+**The original assessment spec follows:**
+
 ## Overview
 
 In this activity, you will write a REST server to facilitate playing a number guessing game known as "Bulls and Cows". In each game, a 4-digit number is generated where every digit is different. For each round, the user guesses a number and is told the exact and partial digit matches.
