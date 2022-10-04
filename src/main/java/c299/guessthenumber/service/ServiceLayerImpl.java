@@ -62,7 +62,7 @@ public class ServiceLayerImpl implements ServiceLayer {
 	public int createGame() {
 		Game game = new Game();
 		game.setAnswer(generateAnswer());
-		return dao.addGame(game);
+		return dao.addGame(game).getId();
 	}
 
 	@Override

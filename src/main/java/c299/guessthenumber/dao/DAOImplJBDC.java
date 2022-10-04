@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import c299.guessthenumber.dto.Game;
 import c299.guessthenumber.dto.Round;
@@ -62,14 +63,18 @@ public class DAOImplJBDC implements DAO {
 	}
 
 	@Override
-	public Integer addGame(Game game) {
-		List<Integer> result = jdbcTemplate.query("INSERT INTO game (answer) VALUES (?) RETURNING id", new IdMapper(), game.getAnswer());
-		return result.size() == 0 ? null : result.get(0);
+	@Transactional
+	public Game addGame(Game game) {
+		List<Integer> id = jdbcTemplate.query("INSERT INTO game (answer) VALUES (?) RETURNING id", new IdMapper(), game.getAnswer());
+		if (id.size() == 0) throw new DAOException();
+		List<Game> returnedGame = jdbcTemplate.query("SELECT * FROM game WHERE id = ?", new GameMapper(), id.get(0));
+		if (returnedGame.size() == 0) throw new DAOException();
+		return returnedGame.get(0);
 	}
 
 	@Override
 	public boolean updateGame(Game game) {
-		return jdbcTemplate.update("UPDATE game SET finished = ? WHERE id = ?", game.isFinished(), game.getId()) > 0;
+		return jdbcTemplate.update("UPDATE game SET is_finished = ? WHERE id = ?", game.isFinished(), game.getId()) > 0;
 	}
 
 	@Override
