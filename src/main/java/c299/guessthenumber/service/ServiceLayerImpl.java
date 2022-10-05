@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import c299.guessthenumber.dao.DAO;
+import c299.guessthenumber.dao.DAOGame;
+import c299.guessthenumber.dao.DAORound;
 import c299.guessthenumber.dto.Game;
 import c299.guessthenumber.dto.Round;
 
@@ -15,10 +16,10 @@ import c299.guessthenumber.dto.Round;
 public class ServiceLayerImpl implements ServiceLayer {
 
 	@Autowired
-	private DAO<Game> gameDAO;
+	private DAOGame gameDAO;
 
 	@Autowired
-	private DAO<Round> roundDAO;
+	private DAORound roundDAO;
 
 	private static class UniqueDigitGenerator {
 
@@ -124,10 +125,8 @@ public class ServiceLayerImpl implements ServiceLayer {
 				exactMatches++;
 			}
 
-		if (exactMatches == 4) {
-			game.setFinished(true);
-			if (!gameDAO.update(game)) throw new UnexpectedBehaviourException();
-		}
+		if (exactMatches == 4 && !gameDAO.setFinished(game.getId()))
+			throw new UnexpectedBehaviourException();
 		
 		// Find indexes with partial matches
 		// First loop through non-exact matches
@@ -145,5 +144,10 @@ public class ServiceLayerImpl implements ServiceLayer {
 		guess.setPartialMatches(partialMatches);
 
 		return roundDAO.add(guess);
+	}
+
+	@Override
+	public List<Round> getRoundsForGame(Game game) {
+		return roundDAO.getByGameId(game.getId());
 	}
 }

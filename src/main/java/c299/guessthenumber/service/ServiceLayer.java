@@ -14,4 +14,5 @@ public interface ServiceLayer {
     Round processGuess(Round guess) throws InvalidGuessException, UnexpectedBehaviourException;
     Game getGame(int id);
     List<Game> getAllGames();
+    List<Round> getRoundsForGame(Game game);
 }

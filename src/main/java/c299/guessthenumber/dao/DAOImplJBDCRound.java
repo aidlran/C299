@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import c299.guessthenumber.dto.Round;
 
 @Repository
-public class DAOImplJBDCRound extends DAOImplJBDC<Round> {
+public class DAOImplJBDCRound extends DAOImplJBDC<Round> implements DAORound {
 
 	private static final class RoundMapper implements RowMapper<Round> {
 		@Override
@@ -46,8 +46,7 @@ public class DAOImplJBDCRound extends DAOImplJBDC<Round> {
 	}
 
 	@Override
-	public boolean update(Round round) {
-		// No round fields may be changed
-		return true;
+	public List<Round> getByGameId(int id) {
+		return jdbcTemplate.query("SELECT r.* FROM round r JOIN game g ON g.id = r.game_id WHERE g.id = ? ORDER BY guess_time DESC", new RoundMapper(), id);
 	}
 }

@@ -78,4 +78,13 @@ public class APIController {
 		}
 	}
 	
+	/**
+	 * GET /api/guess/{gameID}
+	 * @param gameId The ID of a game.
+	 * @return A list of all guesses for the game sorted from most recent to oldest.
+	 */
+	@GetMapping("guess/{gameId}")
+	public List<Round> getRoundsForGame(@PathVariable int gameId) {
+		return service.getRoundsForGame(getGame(gameId));
+	}
 }

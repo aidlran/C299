@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import c299.guessthenumber.dto.Game;
 
 @Repository
-public class DAOImplJBDCGame extends DAOImplJBDC<Game> {
+public class DAOImplJBDCGame extends DAOImplJBDC<Game> implements DAOGame{
 
 	private static final class GameMapper implements RowMapper<Game> {
 		@Override
@@ -44,7 +44,7 @@ public class DAOImplJBDCGame extends DAOImplJBDC<Game> {
 	}
 
 	@Override
-	public boolean update(Game game) {
-		return jdbcTemplate.update("UPDATE game SET is_finished = ? WHERE id = ?", game.isFinished(), game.getId()) > 0;
+	public boolean setFinished(int id) {
+		return jdbcTemplate.update("UPDATE game SET is_finished = true WHERE id = ?", id) > 0;
 	}
 }
