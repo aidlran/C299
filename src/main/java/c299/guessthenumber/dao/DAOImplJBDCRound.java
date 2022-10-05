@@ -22,6 +22,7 @@ public class DAOImplJBDCRound extends DAOImplJBDC<Round> {
 			round.setGuessTime(resultSet.getDate("guess_time"));
 			round.setExactMatches(resultSet.getInt("exact_matches"));
 			round.setPartialMatches(resultSet.getInt("partial_matches"));
+			round.setGameId(resultSet.getInt("game_id"));
 			return round;
 		}
 	}
@@ -42,5 +43,11 @@ public class DAOImplJBDCRound extends DAOImplJBDC<Round> {
 		List<Integer> id = jdbcTemplate.query("INSERT INTO round (guess, exact_matches, partial_matches, game_id) VALUES (?, ?, ?, ?) RETURNING id", new IdMapper(), round.getGuess(), round.getExactMatches(), round.getPartialMatches(), round.getGameId());
 		if (id.size() == 0 || (round = getById(id.get(0))) == null) throw new DAOException();
 		return round;
+	}
+
+	@Override
+	public boolean update(Round round) {
+		// No round fields may be changed
+		return true;
 	}
 }

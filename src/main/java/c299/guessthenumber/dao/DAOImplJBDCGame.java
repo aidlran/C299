@@ -42,4 +42,9 @@ public class DAOImplJBDCGame extends DAOImplJBDC<Game> {
 		if (id.size() == 0 || (game = getById(id.get(0))) == null) throw new DAOException();
 		return game;
 	}
+
+	@Override
+	public boolean update(Game game) {
+		return jdbcTemplate.update("UPDATE game SET is_finished = ? WHERE id = ?", game.isFinished(), game.getId()) > 0;
+	}
 }
