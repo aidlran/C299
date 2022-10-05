@@ -2,12 +2,10 @@ package c299.guessthenumber.dao;
 
 import java.util.List;
 
-import c299.guessthenumber.dto.Game;
-
-public interface DAO {
-    Game getGameById(int id);
-    List<Game> getAllGames();
-    Game addGame(Game name);
-    boolean updateGame(Game test);
-    boolean removeGame(int id);
+public interface DAO<T> {
+    T getById(int id);
+    List<T> getAll();
+    T add(T name);
+    boolean update(T object);
+    boolean removeById(int id);
 }

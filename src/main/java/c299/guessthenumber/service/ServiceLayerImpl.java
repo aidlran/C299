@@ -13,7 +13,7 @@ import c299.guessthenumber.dto.Game;
 public class ServiceLayerImpl implements ServiceLayer {
 
 	@Autowired
-	private DAO dao;
+	private DAO<Game> gameDAO;
 
 	private static class UniqueDigitGenerator {
 
@@ -62,18 +62,18 @@ public class ServiceLayerImpl implements ServiceLayer {
 	public int createGame() {
 		Game game = new Game();
 		game.setAnswer(generateAnswer());
-		return dao.addGame(game).getId();
+		return gameDAO.add(game).getId();
 	}
 
 	@Override
 	public Game getGame(int id) {
-		Game game = dao.getGameById(id);
+		Game game = gameDAO.getById(id);
 		return game == null ? null : sanitizeGame(game);
 	}
 
 	@Override
 	public List<Game> getAllGames() {
-		List<Game> games = dao.getAllGames();
+		List<Game> games = gameDAO.getAll();
 		for (Game game : games) game = sanitizeGame(game);
 		return games;
 	}

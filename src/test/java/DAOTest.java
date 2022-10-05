@@ -21,7 +21,7 @@ import c299.guessthenumber.dto.Game;
 public class DAOTest {
 
 	@Autowired
-	DAO dao;
+	DAO<Game> dao;
 
 	private Game generateGame() {
 		Game game = new Game();
@@ -31,27 +31,27 @@ public class DAOTest {
 
 	@BeforeEach
 	public void setUp() {
-		for (Game game : dao.getAllGames()) {
-			dao.removeGame(game.getId());
+		for (Game game : dao.getAll()) {
+			dao.removeById(game.getId());
 		}
 	}
 
 	@Test
 	public void testAddGetGame() {
-		Game game = dao.addGame(generateGame());
+		Game game = dao.add(generateGame());
 		assertEquals(
 			game,
-			dao.getGameById(game.getId())
+			dao.getById(game.getId())
 		);
 	}
 
 	@Test
 	public void testGetAllGames() {
 
-		Game a = dao.addGame(generateGame());
-		Game b = dao.addGame(generateGame());
+		Game a = dao.add(generateGame());
+		Game b = dao.add(generateGame());
 
-		List<Game> all = dao.getAllGames();
+		List<Game> all = dao.getAll();
 
 		assertTrue(all.contains(a));
 		assertTrue(all.contains(b));
@@ -61,25 +61,25 @@ public class DAOTest {
 	@Test
 	public void testUpdate() {
 
-		Game test = dao.addGame(generateGame());
-		Game fromDAO = dao.getGameById(test.getId());
+		Game test = dao.add(generateGame());
+		Game fromDAO = dao.getById(test.getId());
 		assertEquals(test, fromDAO);
 
 		test.setFinished(true);
-		dao.updateGame(test);
+		dao.update(test);
 		assertNotEquals(test, fromDAO);
 
-		fromDAO = dao.getGameById(test.getId());
+		fromDAO = dao.getById(test.getId());
 		assertEquals(test, fromDAO);
 	}
 
 	@Test
 	public void testDelete() {
 
-		Game test = dao.addGame(generateGame());
-		assertEquals(test, dao.getGameById(test.getId()));
+		Game test = dao.add(generateGame());
+		assertEquals(test, dao.getById(test.getId()));
 
-		dao.removeGame(test.getId());
-		assertNull(dao.getGameById(test.getId()));
+		dao.removeById(test.getId());
+		assertNull(dao.getById(test.getId()));
 	}
 }

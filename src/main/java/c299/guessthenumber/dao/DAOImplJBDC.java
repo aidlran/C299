@@ -7,44 +7,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import c299.guessthenumber.dto.Game;
-import c299.guessthenumber.dto.Round;
-
-@Repository
-public class DAOImplJBDC implements DAO {
+abstract class DAOImplJBDC<T> implements DAO<T> {
 	
 	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	protected JdbcTemplate jdbcTemplate;
 
-	private static final class GameMapper implements RowMapper<Game> {
-		@Override
-		public Game mapRow(ResultSet resultSet, int index) throws SQLException {
-			Game game = new Game();
-			game.setId(resultSet.getInt("id"));
-			game.setAnswer(resultSet.getInt("answer"));
-			game.setFinished(resultSet.getBoolean("is_finished"));
-			game.setStartTime(resultSet.getDate("start_time"));
-			return game;
-		}
-	}
+	protected abstract String getTableName();
+	protected abstract RowMapper<T> getRowMapper();
 
-	private static final class RoundMapper implements RowMapper<Round> {
-		@Override
-		public Round mapRow(ResultSet resultSet, int index) throws SQLException {
-			Round round = new Round();
-			round.setId(resultSet.getInt("id"));
-			round.setGuess(resultSet.getInt("guess"));
-			round.setGuessTime(resultSet.getDate("guess_time"));
-			round.setExactMatches(resultSet.getInt("exact_matches"));
-			round.setPartialMatches(resultSet.getInt("partial_matches"));
-			return round;
-		}
-	}
-
-	private static final class IdMapper implements RowMapper<Integer> {
+	protected static final class IdMapper implements RowMapper<Integer> {
 		@Override
 		public Integer mapRow(ResultSet resultSet, int index) throws SQLException {
 			return resultSet.getInt("id");
@@ -52,33 +24,18 @@ public class DAOImplJBDC implements DAO {
 	}
 
 	@Override
-	public Game getGameById(int id) {
-		List<Game> result = jdbcTemplate.query("SELECT * FROM game WHERE id = ?", new GameMapper(), id);
+	public T getById(int id) {
+		List<T> result = jdbcTemplate.query("SELECT * FROM " + getTableName() + " WHERE id = ?", getRowMapper(), id);
 		return result.size() == 0 ? null : result.get(0);
 	}
 
 	@Override
-	public List<Game> getAllGames() {
-		return jdbcTemplate.query("SELECT * FROM game", new GameMapper());
+	public List<T> getAll() {
+		return jdbcTemplate.query("SELECT * FROM " + getTableName(), getRowMapper());
 	}
 
 	@Override
-	@Transactional
-	public Game addGame(Game game) {
-		List<Integer> id = jdbcTemplate.query("INSERT INTO game (answer) VALUES (?) RETURNING id", new IdMapper(), game.getAnswer());
-		if (id.size() == 0) throw new DAOException();
-		List<Game> returnedGame = jdbcTemplate.query("SELECT * FROM game WHERE id = ?", new GameMapper(), id.get(0));
-		if (returnedGame.size() == 0) throw new DAOException();
-		return returnedGame.get(0);
-	}
-
-	@Override
-	public boolean updateGame(Game game) {
-		return jdbcTemplate.update("UPDATE game SET is_finished = ? WHERE id = ?", game.isFinished(), game.getId()) > 0;
-	}
-
-	@Override
-	public boolean removeGame(int id) {
-		return jdbcTemplate.update("DELETE FROM game WHERE id = ?", id) > 0;
+	public boolean removeById(int id) {
+		return jdbcTemplate.update("DELETE FROM " + getTableName() + " WHERE id = ?", id) > 0;
 	}
 }
