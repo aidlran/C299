@@ -13,7 +13,7 @@ import c299.guessthenumber.dto.Game;
 @Repository
 public class DAOImplJBDCGame extends DAOImplJBDC<Game> {
 
-    private static final class GameMapper implements RowMapper<Game> {
+	private static final class GameMapper implements RowMapper<Game> {
 		@Override
 		public Game mapRow(ResultSet resultSet, int index) throws SQLException {
 			Game game = new Game();
@@ -25,26 +25,21 @@ public class DAOImplJBDCGame extends DAOImplJBDC<Game> {
 		}
 	}
 
-    @Override
-    protected String getTableName() {
-        return "game";
-    }
+	@Override
+	protected String getTableName() {
+		return "game";
+	}
 
-    @Override
-    protected RowMapper<Game> getRowMapper() {
-        return new GameMapper();
-    }
+	@Override
+	protected RowMapper<Game> getRowMapper() {
+		return new GameMapper();
+	}
 
-    @Override
+	@Override
 	@Transactional
 	public Game add(Game game) {
 		List<Integer> id = jdbcTemplate.query("INSERT INTO game (answer) VALUES (?) RETURNING id", new IdMapper(), game.getAnswer());
 		if (id.size() == 0 || (game = getById(id.get(0))) == null) throw new DAOException();
 		return game;
-	}
-
-    @Override
-	public boolean update(Game game) {
-		return jdbcTemplate.update("UPDATE game SET is_finished = ? WHERE id = ?", game.isFinished(), game.getId()) > 0;
 	}
 }

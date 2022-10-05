@@ -11,4 +11,5 @@ public class Round {
     private Date guessTime;
     private int exactMatches;
     private int partialMatches;
+    private int gameId;
 }

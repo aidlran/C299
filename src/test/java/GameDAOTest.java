@@ -1,5 +1,4 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -18,7 +17,7 @@ import c299.guessthenumber.dto.Game;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = TestConfiguration.class)
-public class DAOTest {
+public class GameDAOTest {
 
 	@Autowired
 	DAO<Game> dao;
@@ -56,21 +55,6 @@ public class DAOTest {
 		assertTrue(all.contains(a));
 		assertTrue(all.contains(b));
 		assertEquals(all.size(), 2);
-	}
-
-	@Test
-	public void testUpdate() {
-
-		Game test = dao.add(generateGame());
-		Game fromDAO = dao.getById(test.getId());
-		assertEquals(test, fromDAO);
-
-		test.setFinished(true);
-		dao.update(test);
-		assertNotEquals(test, fromDAO);
-
-		fromDAO = dao.getById(test.getId());
-		assertEquals(test, fromDAO);
 	}
 
 	@Test
