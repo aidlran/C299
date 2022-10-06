@@ -14,7 +14,7 @@ public abstract class Character {
     private String name;
     private String description;
     private String superpower;
-    private ContactDetails contactDetails;
+    private int contactDetailsId;
 
     public abstract Type getType();
 }

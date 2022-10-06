@@ -11,7 +11,7 @@ public class Organisation {
     private int id;
 	private String name;
 	private String description;
-	private ContactDetails contactDetails;
+	private int contactDetailsId;
 
 	private List<Character> roster = new ArrayList<>();
 }

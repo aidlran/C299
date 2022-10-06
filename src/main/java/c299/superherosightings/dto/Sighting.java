@@ -7,8 +7,8 @@ import lombok.Data;
 @Data
 public class Sighting {
     private int id;
-	private Character character;
+	private int characterId;
 	private Date timestamp;
-	private Location location;
+	private int locationId;
 	private String description;
 }

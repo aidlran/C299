@@ -1,9 +1,5 @@
 -- Database creation script for PSQL
 
-CREATE DATABASE c299_superhero_sightings;
-
-\connect c299_superhero_sightings;
-
 -- For case insensitive text
 CREATE EXTENSION IF NOT EXISTS citext;
 
