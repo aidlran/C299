@@ -2,7 +2,7 @@
 
 # Run tests on Linux (bash)
 
-DB_NAME=c299_superhero_sightings
+DB_NAME=c299_superhero_sightings_test
 
 # Go to project root
 cd ../

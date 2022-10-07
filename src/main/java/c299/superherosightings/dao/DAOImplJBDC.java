@@ -9,8 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 abstract class DAOImplJBDC<T> implements DAO<T> {
-	
-	@Autowired
+
 	protected JdbcTemplate jdbcTemplate;
 
 	protected abstract String getTableName();
@@ -21,6 +20,11 @@ abstract class DAOImplJBDC<T> implements DAO<T> {
 		public Integer mapRow(ResultSet resultSet, int index) throws SQLException {
 			return resultSet.getInt("id");
 		}
+	}
+
+	@Autowired
+	public DAOImplJBDC(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
 	}
 
 	@Override

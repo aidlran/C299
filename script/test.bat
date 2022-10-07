@@ -2,7 +2,7 @@
 
 :: Windows versions of scripts are untested
 
-set DB_NAME=c299_superhero_sightings
+set DB_NAME=c299_superhero_sightings_test
 
 :: Go to project root
 cd ../
