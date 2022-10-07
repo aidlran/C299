@@ -61,12 +61,6 @@ public class DAOImplJBDCCharacter extends DAOImplJBDC<SuperCharacter> {
 	}
 
 	@Override
-	public SuperCharacter getById(int id) {
-		List<SuperCharacter> result = jdbcTemplate.query("SELECT c.*, ct.name AS type FROM character c JOIN character_type ct ON c.type_id = ct.id WHERE c.id = ?", getRowMapper(), id);
-		return result.size() == 0 ? null : result.get(0);
-	}
-
-	@Override
 	@Transactional
 	public SuperCharacter add(SuperCharacter character) {
 		List<Integer> id = jdbcTemplate.query(
