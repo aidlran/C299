@@ -5,10 +5,10 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class Sighting {
+public class Sighting implements DTO {
     private int id;
-	private int characterId;
+	private Integer characterId;
 	private Date timestamp;
-	private int locationId;
+	private Integer locationId;
 	private String description;
 }

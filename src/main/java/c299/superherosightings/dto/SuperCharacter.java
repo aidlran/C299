@@ -8,7 +8,7 @@ import lombok.Data;
  * This data transfer class repesents a Hero or a Villain.
  */
 @Data
-public class SuperCharacter {
+public class SuperCharacter implements DTO {
     private int id;
     private String name;
     private String description;

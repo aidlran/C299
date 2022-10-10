@@ -15,7 +15,8 @@ INSERT INTO character_type (name) VALUES
 CREATE TABLE IF NOT EXISTS location (
 	id SERIAL NOT NULL PRIMARY KEY,
 	name TEXT NOT NULL,
-	coordinates POINT NOT NULL,
+	longitude DOUBLE PRECISION NOT NULL,
+	latitude DOUBLE PRECISION NOT NULL,
 	description TEXT NULL,
 	street TEXT NULL,
 	postal_code TEXT NULL
@@ -26,6 +27,7 @@ CREATE TABLE IF NOT EXISTS contact_details (
 	location_id INT NULL,
 	phone_number TEXT NULL,
 	email_address TEXT NULL,
+	note TEXT NULL,
 
 	FOREIGN KEY (location_id) REFERENCES location(id)
 );
@@ -63,7 +65,7 @@ CREATE TABLE IF NOT EXISTS sighting (
 	id SERIAL NOT NULL PRIMARY KEY,
 	character_id INT NOT NULL,
 	location_id INT NOT NULL,
-	timestamp TIMESTAMP NOT NULL,
+	timestamp TIMESTAMP NOT NULL DEFAULT now(),
 	description TEXT NULL,
 
 	FOREIGN KEY (character_id) REFERENCES character(id),

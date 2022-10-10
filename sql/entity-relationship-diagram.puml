@@ -38,6 +38,7 @@ entity contact_details {
 	--
 	phone_number : text
 	email_address : text
+	note : text
 }
 
 entity location {
@@ -47,7 +48,8 @@ entity location {
 	description : text
 	street : text
 	postal_code : text
-	co-ordinates : point
+	longitude : double
+	latitude : double
 }
 
 entity organisation {

@@ -9,20 +9,20 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import c299.superherosightings.TestConfiguration;
-import c299.superherosightings.dao.DAO;
+import c299.superherosightings.dao.DAOCharacter;
 import c299.superherosightings.dto.SuperCharacter;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = TestConfiguration.class)
-public class DAOTest {
+public class DAOCharacterTest {
 
 	@Autowired
-	private DAO<SuperCharacter> characterDAO;
+	private DAOCharacter dao;
 
 	@BeforeEach
 	public void setUp() {
-		for (SuperCharacter c : characterDAO.getAll())
-			characterDAO.removeById(c.getId());
+		for (SuperCharacter character : dao.getAll())
+			dao.removeById(character.getId());
 	}
 
 	@Test
@@ -40,10 +40,10 @@ public class DAOTest {
 		villain.setDescription("Purple boi");
 		villain.setSuperpower("Infinity Gauntlet");
 
-		assertNotNull(hero = characterDAO.add(hero));
-		assertNotNull(villain = characterDAO.add(villain));
+		assertNotNull(hero = dao.add(hero));
+		assertNotNull(villain = dao.add(villain));
 
-		assertEquals(hero, characterDAO.getById(hero.getId()));
-		assertEquals(villain, characterDAO.getById(villain.getId()));
+		assertEquals(hero, dao.getById(hero.getId()));
+		assertEquals(villain, dao.getById(villain.getId()));
 	}
 }

@@ -3,9 +3,9 @@ package c299.superherosightings.dto;
 import lombok.Data;
 
 @Data
-public class Organisation {
+public class Organisation implements DTO {
     private int id;
 	private String name;
 	private String description;
-	private int contactDetailsId;
+	private Integer contactDetailsId;
 }

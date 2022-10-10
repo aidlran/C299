@@ -3,10 +3,10 @@ package c299.superherosightings.dto;
 import lombok.Data;
 
 @Data
-public class ContactDetails {
+public class ContactDetails implements DTO {
     private int id;
     private String phoneNumber;
     private String emailAddress;
-    private int addressId;
+    private Integer locationId;
     private String note;
 }

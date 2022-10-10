@@ -17,9 +17,9 @@ import com.google.common.collect.HashBiMap;
 import c299.superherosightings.dto.SuperCharacter;
 
 @Repository
-public class DAOImplJBDCCharacter extends DAOImplJBDC<SuperCharacter> {
+public class DAOCharacterImplJBDC extends DAOImplJBDC<SuperCharacter> implements DAOCharacter {
 
-	BiMap<Integer, String> characterTypes = HashBiMap.create();
+	private final BiMap<Integer, String> characterTypes = HashBiMap.create();
 
 	private static final class CharacterMapper implements RowMapper<SuperCharacter> {
 	
@@ -44,7 +44,7 @@ public class DAOImplJBDCCharacter extends DAOImplJBDC<SuperCharacter> {
 	}
 
 	@Autowired
-	public DAOImplJBDCCharacter(JdbcTemplate jdbcTemplate) {
+	public DAOCharacterImplJBDC(JdbcTemplate jdbcTemplate) {
 		super(jdbcTemplate);
 		SqlRowSet result = jdbcTemplate.queryForRowSet("SELECT * FROM character_type");
 		while (result.next()) characterTypes.put(result.getInt("id"), result.getString("name"));
