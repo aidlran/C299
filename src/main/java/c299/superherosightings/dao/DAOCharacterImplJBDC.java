@@ -76,4 +76,15 @@ public class DAOCharacterImplJBDC extends DAOImplJBDC<SuperCharacter> implements
 		);
 		return (id.size() == 0 || (character = getById(id.get(0))) == null) ? null : character;
 	}
+
+	@Override
+	public List<SuperCharacter> getByOrganisation(int organisationID) {
+		return jdbcTemplate.query(
+			"SELECT c.* FROM organisation_member om " +
+			"JOIN " + getTableName() + " c ON c.id = om.character_id " +
+			"WHERE om.organisation_id = ?",
+			getRowMapper(),
+			organisationID
+		);
+	}
 }

@@ -54,4 +54,14 @@ public class DAOOrganisationImplJBDC extends DAOImplJBDC<Organisation> implement
 		);
 		return (id.size() == 0 || (object = getById(id.get(0))) == null) ? null : object;
     }
+
+	@Override
+	public boolean addMember(int organisationID, int characterID) {
+		return jdbcTemplate.update(
+			"INSERT INTO organisation_member (organisation_id, character_id) " +
+			"VALUES (?, ?)",
+			organisationID,
+			characterID
+		) > 0;
+	}
 }

@@ -57,8 +57,8 @@ CREATE TABLE IF NOT EXISTS organisation_member (
 	organisation_id INT NOT NULL,
 	character_id INT NOT NULL,
 
-	FOREIGN KEY (organisation_id) REFERENCES organisation(id),
-	FOREIGN KEY (character_id) REFERENCES character(id)
+	FOREIGN KEY (organisation_id) REFERENCES organisation(id) ON DELETE CASCADE,
+	FOREIGN KEY (character_id) REFERENCES character(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS sighting (
@@ -68,6 +68,6 @@ CREATE TABLE IF NOT EXISTS sighting (
 	timestamp TIMESTAMP NOT NULL DEFAULT now(),
 	description TEXT NULL,
 
-	FOREIGN KEY (character_id) REFERENCES character(id),
-	FOREIGN KEY (location_id) REFERENCES location(id)
+	FOREIGN KEY (character_id) REFERENCES character(id) ON DELETE CASCADE,
+	FOREIGN KEY (location_id) REFERENCES location(id) ON DELETE CASCADE
 );
