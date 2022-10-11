@@ -64,4 +64,15 @@ public class DAOOrganisationImplJBDC extends DAOImplJBDC<Organisation> implement
 			characterID
 		) > 0;
 	}
+
+	@Override
+    public List<Organisation> getByCharacterID(int characterID) {
+		return jdbcTemplate.query(
+			"SELECT DISTINCT o.* FROM organisation o " +
+			"JOIN organisation_member om ON o.id = om.organisation_id " +
+			"WHERE om.character_id = ?",
+			getRowMapper(),
+			characterID
+		);
+	}
 }
