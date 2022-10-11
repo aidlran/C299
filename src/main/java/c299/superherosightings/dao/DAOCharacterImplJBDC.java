@@ -9,7 +9,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -61,20 +60,34 @@ public class DAOCharacterImplJBDC extends DAOImplJBDC<SuperCharacter> implements
 	}
 
 	@Override
-	@Transactional
 	public SuperCharacter add(SuperCharacter character) {
 		List<Integer> id = jdbcTemplate.query(
-				"INSERT INTO character (type_id, contact_details_id, name, description, superpower) " +
-				"VALUES (?, ?, ?, ?, ?) " +
-				"RETURNING id",
-				new IdMapper(),
-				characterTypes.inverse().get(character.getType()),
-				character.getContactDetailsId(),
-				character.getName(),
-				character.getDescription(),
-				character.getSuperpower()
+			"INSERT INTO character (type_id, contact_details_id, name, description, superpower) " +
+			"VALUES (?, ?, ?, ?, ?) " +
+			"RETURNING id",
+			new IdMapper(),
+			characterTypes.inverse().get(character.getType()),
+			character.getContactDetailsId(),
+			character.getName(),
+			character.getDescription(),
+			character.getSuperpower()
 		);
 		return (id.size() == 0 || (character = getById(id.get(0))) == null) ? null : character;
+	}
+
+	@Override
+	public SuperCharacter update(SuperCharacter character) {
+		return jdbcTemplate.update(
+			"UPDATE " + getTableName() + " " +
+			"SET type_id = ?, contact_details_id, name = ?, description = ?, superpower = ? " +
+			"WHERE id = ?",
+			characterTypes.inverse().get(character.getType()),
+			character.getContactDetailsId(),
+			character.getName(),
+			character.getDescription(),
+			character.getSuperpower(),
+			character.getId()
+		) == 0 ? null : character;
 	}
 
 	@Override

@@ -42,18 +42,31 @@ public class DAOOrganisationImplJBDC extends DAOImplJBDC<Organisation> implement
     }
  
     @Override
-    public Organisation add(Organisation object) {
+    public Organisation add(Organisation organisation) {
 		List<Integer> id = jdbcTemplate.query(
-				"INSERT INTO " + getTableName() + " (contact_details_id, name, description) " +
-				"VALUES (?, ?, ?) " +
-				"RETURNING id",
-				new IdMapper(),
-				object.getContactDetailsId(),
-				object.getName(),
-				object.getDescription()
+			"INSERT INTO " + getTableName() + " (contact_details_id, name, description) " +
+			"VALUES (?, ?, ?) " +
+			"RETURNING id",
+			new IdMapper(),
+			organisation.getContactDetailsId(),
+			organisation.getName(),
+			organisation.getDescription()
 		);
-		return (id.size() == 0 || (object = getById(id.get(0))) == null) ? null : object;
+		return (id.size() == 0 || (organisation = getById(id.get(0))) == null) ? null : organisation;
     }
+
+	@Override
+	public Organisation update(Organisation organisation) {
+		return jdbcTemplate.update(
+			"UPDATE " + getTableName() + " " +
+			"SET contact_details_id = ?, name = ?, description = ? " +
+			"WHERE id = ?",
+			organisation.getContactDetailsId(),
+			organisation.getName(),
+			organisation.getDescription(),
+			organisation.getId()
+		) == 0 ? null : organisation;
+	}
 
 	@Override
 	public boolean addMember(int organisationID, int characterID) {

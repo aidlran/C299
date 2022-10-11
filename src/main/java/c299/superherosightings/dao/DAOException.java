@@ -5,11 +5,11 @@ package c299.superherosightings.dao;
  */
 public class DAOException extends Exception {
 
-    public DAOException(String error) {
-        super(error);
-    }
+	public DAOException(String error) {
+		super(error);
+	}
 
-    public DAOException(String error, Throwable cause) {
-        super(error, cause);
-    }
+	public DAOException(String error, Throwable cause) {
+		super(error, cause);
+	}
 }

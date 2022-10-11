@@ -29,7 +29,7 @@ public class DAOSightingImplJDBC extends DAOImplJBDC<Sighting> implements DAOSig
 	}
 
 	@Autowired
-	DAOSightingImplJDBC(JdbcTemplate jdbcTemplate) {
+	public DAOSightingImplJDBC(JdbcTemplate jdbcTemplate) {
 		super(jdbcTemplate);
 	}
 
@@ -44,18 +44,32 @@ public class DAOSightingImplJDBC extends DAOImplJBDC<Sighting> implements DAOSig
 	}
 
 	@Override
-	public Sighting add(Sighting object) {
+	public Sighting add(Sighting sighting) {
 		List<Integer> id = jdbcTemplate.query(
 			"INSERT INTO " + getTableName() + " (description, timestamp, character_id, location_id) " +
 			"VALUES (?, ?, ?, ?) " +
 			"RETURNING id",
 			new IdMapper(),
-			object.getDescription(),
-			object.getTimestamp(),
-			object.getCharacterId(),
-			object.getLocationId()
+			sighting.getDescription(),
+			sighting.getTimestamp(),
+			sighting.getCharacterId(),
+			sighting.getLocationId()
 		);
-		return (id.size() == 0 || (object = getById(id.get(0))) == null) ? null : object;
+		return (id.size() == 0 || (sighting = getById(id.get(0))) == null) ? null : sighting;
+	}
+
+	@Override
+	public Sighting update(Sighting sighting) {
+		return jdbcTemplate.update(
+			"UPDATE " + getTableName() + " " +
+			"SET description = ?, timestamp = ?, character_id = ?, location_id = ? " +
+			"WHERE id = ?",
+			sighting.getDescription(),
+			sighting.getTimestamp(),
+			sighting.getCharacterId(),
+			sighting.getLocationId(),
+			sighting.getId()
+		) == 0 ? null : sighting;
 	}
 
 	@Override
