@@ -1,5 +1,8 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,10 +30,27 @@ public class DAOOrganisationTest {
 
 	@Test
 	public void testAddGet() {
+
+		// Create object
 		Organisation organisation = new Organisation();
-		organisation.setName("Test");
-		organisation.setDescription("Test");
+		organisation.setName("Ordinary Inc.");
+
+		// Test INSERT and SELECT
 		assertNotNull(organisation = dao.add(organisation));
 		assertEquals(organisation, dao.getById(organisation.getId()));
+
+		// Change something
+		organisation.setDescription("A new collective of supers.");
+
+		// Make sure .equals() works
+		assertNotEquals(organisation, dao.getById(organisation.getId()));
+
+		// Test UPDATE
+		assertNotNull(dao.update(organisation));
+		assertEquals(organisation, dao.getById(organisation.getId()));
+
+		// Test DELETE
+		assertTrue(dao.removeById(organisation.getId()));
+		assertNull(dao.getById(organisation.getId()));
 	}
 }

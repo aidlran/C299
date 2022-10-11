@@ -1,5 +1,8 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Date;
 
@@ -31,6 +34,24 @@ public class DAOSightingTest {
 	@Autowired
 	private DAOLocation locationDAO;
 
+	private SuperCharacter generateCharacter() {
+		SuperCharacter character = new SuperCharacter();
+		character.setType("hero");
+		character.setName("Spider-Man");
+		character.setDescription("Does whatever a spider can.");
+		character.setSuperpower("Web-slinging");
+		return character;
+	}
+
+	private Location generateLocation() {
+		Location location = new Location();
+		location.setName("New York City");
+		location.setDescription("The Big Apple.");
+		location.setLongitude(-73.9808);
+		location.setLatitude(40.7648);
+		return location;
+	}
+
 	@BeforeEach
 	public void setUp() {
 		for (Sighting sighting : sightingDAO.getAll())
@@ -42,30 +63,31 @@ public class DAOSightingTest {
 	}
 
 	@Test
-	public void testAddGet() {
+	public void testCRUD() {
 
-		SuperCharacter character = new SuperCharacter();
-		character.setType("hero");
-		character.setName("Spiderman");
-		character.setDescription("Does whatever a spider can.");
-		character.setSuperpower("Web-slinging");
-		character = characterDAO.add(character);
-
-		Location location = new Location();
-		location.setName("Test");
-		location.setDescription("Test");
-		location.setLongitude(1);
-		location.setLatitude(2);
-		location.setStreet("Test");
-		location.setPostalCode("TE5 1TT");
-		location = locationDAO.add(location);
-
+		// Create Sighting
 		Sighting sighting = new Sighting();
-		sighting.setCharacterId(character.getId());
-		sighting.setLocationId(location.getId());
-		sighting.setDescription("Test");
+		sighting.setCharacterId(characterDAO.add(generateCharacter()).getId());
+		sighting.setLocationId(locationDAO.add(generateLocation()).getId());
+		sighting.setDescription("Northbound");
 		sighting.setTimestamp(new Date(System.currentTimeMillis()));
+
+		// Test INSERT and SELECT
 		assertNotNull(sighting = sightingDAO.add(sighting));
 		assertEquals(sighting, sightingDAO.getById(sighting.getId()));
+
+		// Change something
+		sighting.setDescription("Southbound");
+
+		// Make sure .equals() works
+		assertNotEquals(sighting, sightingDAO.getById(sighting.getId()));
+
+		// Test UPDATE
+		assertNotNull(sightingDAO.update(sighting));
+		assertEquals(sighting, sightingDAO.getById(sighting.getId()));
+
+		// Test DELETE
+		assertTrue(sightingDAO.removeById(sighting.getId()));
+		assertNull(sightingDAO.getById(sighting.getId()));
 	}
 }

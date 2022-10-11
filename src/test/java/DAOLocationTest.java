@@ -1,5 +1,8 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,14 +30,30 @@ public class DAOLocationTest {
 
 	@Test
 	public void testAddGet() {
+
+		// Create object
 		Location location = new Location();
-		location.setName("Test");
-		location.setDescription("Test");
-		location.setLongitude(1);
-		location.setLatitude(2);
-		location.setStreet("Test");
-		location.setPostalCode("TE5 1TT");
+		location.setName("New York City");
+		location.setDescription("The Big Apple.");
+		location.setLongitude(-73.9808);
+		location.setLatitude(40.7648);
+
+		// Test INSERT and SELECT
 		assertNotNull(location = dao.add(location));
 		assertEquals(location, dao.getById(location.getId()));
+
+		// Change something
+		location.setDescription("The city that never sleeps.");
+
+		// Make sure .equals() works
+		assertNotEquals(location, dao.getById(location.getId()));
+
+		// Test UPDATE
+		assertNotNull(dao.update(location));
+		assertEquals(location, dao.getById(location.getId()));
+
+		// Test DELETE
+		assertTrue(dao.removeById(location.getId()));
+		assertNull(dao.getById(location.getId()));
 	}
 }

@@ -22,7 +22,9 @@ public class DAOSightingImplJDBC extends DAOImplJBDC<Sighting> implements DAOSig
 			sighting.setId(resultSet.getInt("id"));
 			sighting.setDescription(resultSet.getString("description"));
 			sighting.setCharacterId(resultSet.getInt("character_id"));
+			if (resultSet.wasNull()) sighting.setCharacterId(null);
 			sighting.setLocationId(resultSet.getInt("location_id"));
+			if (resultSet.wasNull()) sighting.setLocationId(null);
 			sighting.setTimestamp(resultSet.getDate("timestamp"));
 			return sighting;
 		}

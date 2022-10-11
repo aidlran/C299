@@ -22,6 +22,7 @@ public class DAOOrganisationImplJBDC extends DAOImplJBDC<Organisation> implement
 			organisation.setName(resultSet.getString("name"));
 			organisation.setDescription(resultSet.getString("description"));
 			organisation.setContactDetailsId(resultSet.getInt("contact_details_id"));
+			if (resultSet.wasNull()) organisation.setContactDetailsId(null);
 			return organisation;
 		}
 	}

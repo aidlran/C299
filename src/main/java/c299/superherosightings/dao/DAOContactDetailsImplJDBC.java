@@ -20,6 +20,7 @@ public class DAOContactDetailsImplJDBC extends DAOImplJBDC<ContactDetails> imple
 			ContactDetails contactDetails = new ContactDetails();
 			contactDetails.setId(resultSet.getInt("id"));
 			contactDetails.setLocationId(resultSet.getInt("location_id"));
+			if (resultSet.wasNull()) contactDetails.setLocationId(null);
 			contactDetails.setEmailAddress(resultSet.getString("email_address"));
 			contactDetails.setPhoneNumber(resultSet.getString("phone_number"));
 			contactDetails.setNote(resultSet.getString("note"));
@@ -63,7 +64,7 @@ public class DAOContactDetailsImplJDBC extends DAOImplJBDC<ContactDetails> imple
 			"UPDATE " + getTableName() + " " +
 			"SET location_id = ?, phone_number = ?, email_address = ?, note = ? " +
 			"WHERE id = ?",
-			contactDetails.getLocationId(),
+			contactDetails.getLocationId() == null ? null : contactDetails.getLocationId(),
 			contactDetails.getPhoneNumber(),
 			contactDetails.getEmailAddress(),
 			contactDetails.getNote(),

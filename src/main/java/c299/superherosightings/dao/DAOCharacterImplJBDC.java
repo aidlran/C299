@@ -38,6 +38,7 @@ public class DAOCharacterImplJBDC extends DAOImplJBDC<SuperCharacter> implements
 			character.setDescription(resultSet.getString("description"));
 			character.setSuperpower(resultSet.getString("superpower"));
 			character.setContactDetailsId(resultSet.getInt("contact_details_id"));
+			if (resultSet.wasNull()) character.setContactDetailsId(null);
 			return character;
 		}
 	}
@@ -79,7 +80,7 @@ public class DAOCharacterImplJBDC extends DAOImplJBDC<SuperCharacter> implements
 	public SuperCharacter update(SuperCharacter character) {
 		return jdbcTemplate.update(
 			"UPDATE " + getTableName() + " " +
-			"SET type_id = ?, contact_details_id, name = ?, description = ?, superpower = ? " +
+			"SET type_id = ?, contact_details_id = ?, name = ?, description = ?, superpower = ? " +
 			"WHERE id = ?",
 			characterTypes.inverse().get(character.getType()),
 			character.getContactDetailsId(),

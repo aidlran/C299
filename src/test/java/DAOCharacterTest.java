@@ -1,5 +1,7 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -28,26 +30,20 @@ public class DAOCharacterTest {
 	private DAOOrganisation organisationDAO;
 
 	private SuperCharacter generateHero() {
-
 		SuperCharacter hero = new SuperCharacter();
-
 		hero.setType("hero");
 		hero.setName("Spiderman");
 		hero.setDescription("Does whatever a spider can.");
 		hero.setSuperpower("Web-slinging");
-
 		return hero;
 	}
 
 	private SuperCharacter generateVillain() {
-
 		SuperCharacter villain = new SuperCharacter();
-
 		villain.setType("villain");
 		villain.setName("Thanos");
 		villain.setDescription("Purple boi");
 		villain.setSuperpower("Infinity Gauntlet");
-
 		return villain;
 	}
 
@@ -60,15 +56,31 @@ public class DAOCharacterTest {
 	}
 
 	@Test
-	public void testAddGet() {
+	public void testCRUD() {
 
 		SuperCharacter hero, villain;
 
+		// Test INSERT
 		assertNotNull(hero = characterDAO.add(generateHero()));
 		assertNotNull(villain = characterDAO.add(generateVillain()));
 
+		// Test SELECT
 		assertEquals(hero, characterDAO.getById(hero.getId()));
 		assertEquals(villain, characterDAO.getById(villain.getId()));
+
+		// Change something
+		hero.setDescription("Nicknamed \"Spidey\". Wears a signature red and blue costume.");
+
+		// Make sure .equals() works
+		assertNotEquals(hero, characterDAO.getById(hero.getId()));
+
+		// Test UPDATE
+		assertNotNull(characterDAO.update(hero));
+		assertEquals(hero, characterDAO.getById(hero.getId()));
+
+		// Test DELETE
+		assertTrue(characterDAO.removeById(hero.getId()));
+		assertNull(characterDAO.getById(hero.getId()));
 	}
 
 	@Test
