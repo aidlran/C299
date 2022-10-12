@@ -110,4 +110,13 @@ public class DAOSightingImplJDBC extends DAOImplJBDC<Sighting> implements DAOSig
 			date
 		);
 	}
+
+	@Override
+	public List<Sighting> getRecent(int limit) {
+		return jdbcTemplate.query(
+			"SELECT * FROM sighting ORDER BY timestamp DESC LIMIT ?",
+			getRowMapper(),
+			limit
+		);
+	}
 }

@@ -10,4 +10,5 @@ public interface DAOSighting extends DAO<Sighting> {
 	List<Sighting> getByLocationID(int locationID);
 	List<Sighting> getByCharacterAndLocationIDs(int characterID, int locationID);
 	List<Sighting> getByDate(Date date);
+	List<Sighting> getRecent(int limit);
 }
