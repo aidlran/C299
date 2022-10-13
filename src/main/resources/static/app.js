@@ -1,4 +1,32 @@
 /**
+ * Get a resource from the REST API.
+ * @param {string} url
+ * @returns {*} A JSON object.
+ */
+const get = url => fetch("/api" + url).then(response => response.json());
+
+/**
+ * More advanced element creation function for better code flow.
+ * @param {string} [type] The type of element, i.e. 'div'.
+ * @param {HTMLElement|function(HTMLElement)} [properties] Either an object containing properties to overwrite on the element or the callback if not using this functionality.
+ * @param {function(HTMLElement)} [callback] A callback with the element passed in.
+ * @returns {HTMLElement} The created element.
+ */
+const createElement = (type = 'div', properties, callback) => {
+	const element = document.createElement(type);
+	switch (typeof properties) {
+		case 'object':
+			Object.assign(element, properties);
+			break;
+		case 'function':
+			properties(element);
+			break;
+	}
+	if (typeof callback === 'function') callback(element);
+	return element;
+};
+
+/**
  * @typedef View
  * @property {function} render Renders the view.
  */
@@ -29,61 +57,28 @@ const VIEW = (() => {
 		 * @type View
 		 */
 		RECENT_SIGHTINGS: {
-			render: () => fetch('/api/sighting/recent')
-				.then(response => response.json())
+			render: () => get('/sighting/recent')
 				.then(data => CONTENT_ROOT.append(
-					(heading => {
-						heading.innerText = "Recent Sightings";
-						return heading;
-					})(document.createElement('h1')),
+					createElement('h1', {innerText: "Recent Sightings"}),
 					data.length == 0
-						? (message => {
-							message.innerText = "No recent sightings.";
-							return message;
-						})(document.createElement('p'))
-						: (table => {
-							table.append(
-								(thead => thead.appendChild((row => {
-									["Super", "Location", "Date", "Notes"]
-										.forEach(label => row.appendChild((cell => {
-											cell.innerText = label;
-											return cell;
-										})(document.createElement('th')))
-									);
-									return row;
-								})(document.createElement('tr'))))(document.createElement('thead')),
-								(tbody => {
-									data.forEach(sighting =>
-										tbody.appendChild((row => {
-											row.append(
-												(cell => {
-													fetch('/api/character/' + sighting['characterId'])
-														.then(response => response.json())
-														.then(character => cell.innerText = character['name'] ?? "");
-													return cell;
-												})(document.createElement('td')),
-												(cell => {
-													fetch('/api/location/' + sighting['locationId'])
-														.then(response => response.json())
-														.then(location => cell.innerText = location['name'] ?? "");
-													return cell;
-												})(document.createElement('td'))
-											);
-											[
-												'timestamp',
-												'description'
-											].forEach(field => row.appendChild((cell => {
-												cell.innerText = sighting[field];
-												return cell;
-											})(document.createElement('td'))))
-											return row;
-										})(document.createElement('tr')))
-									)
-									return tbody;
-								})(document.createElement('tbody'))
-							);
-							return table;
-						})(document.createElement('table'))
+						? createElement('p', {innerText: "No recent Sightings."})
+						: createElement('table', table => table.append(
+							createElement('thead', thead => thead.appendChild(
+								createElement('tr', row => ["Super", "Location", "Date", "Notes"]
+									.forEach(innerText => row.appendChild(createElement('th', {innerText})))
+								)
+							)),
+							createElement('tbody', tbody => data.forEach(sighting => tbody.appendChild(
+								createElement('tr', row => row.append(
+									createElement('td', cell => get('/character/' + sighting['characterId'])
+										.then(character => cell.innerText = character['name'] ?? "")),
+									createElement('td', cell => get('/location/' + sighting['locationId'])
+										.then(location => cell.innerText = location['name'] ?? "")),
+									createElement('td', {innerText: sighting['timestamp']}),
+									createElement('td', {innerText: sighting['description']})
+								))
+							)))
+						))
 				))
 		}
 	};
@@ -91,21 +86,19 @@ const VIEW = (() => {
 
 /**
  * Adds a button to the navigation bar.
- * @param {string} label The button's text label.
+ * @param {string} innerText The button's text label.
  * @param {View} view The View to activate when the button is clicked.
  */
 const createNavButton = (() => {
 
 	const NAV = document.getElementById('navigation');
 
-	return (label, view) => {
-		const button = NAV.appendChild(document.createElement('span'));
-		button.innerText = label;
+	return (innerText, view) => NAV.appendChild(createElement('span', {innerText}, button =>
 		button.addEventListener('click', event => {
 			event.stopPropagation();
 			VIEW.set(view);
-		});
-	};
+		}
+	)));
 })();
 
 createNavButton("Recent Sightings", VIEW.RECENT_SIGHTINGS);
