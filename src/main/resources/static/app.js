@@ -44,7 +44,7 @@ const VIEW = (() => {
 						: (table => {
 							table.append(
 								(thead => thead.appendChild((row => {
-									["Super", "Location", "Time", "Notes"]
+									["Super", "Location", "Date", "Notes"]
 										.forEach(label => row.appendChild((cell => {
 											cell.innerText = label;
 											return cell;
@@ -55,14 +55,25 @@ const VIEW = (() => {
 								(tbody => {
 									data.forEach(sighting =>
 										tbody.appendChild((row => {
+											row.append(
+												(cell => {
+													fetch('/api/character/' + sighting['characterId'])
+														.then(response => response.json())
+														.then(character => cell.innerText = character['name'] ?? "");
+													return cell;
+												})(document.createElement('td')),
+												(cell => {
+													fetch('/api/location/' + sighting['locationId'])
+														.then(response => response.json())
+														.then(location => cell.innerText = location['name'] ?? "");
+													return cell;
+												})(document.createElement('td'))
+											);
 											[
-												// TODO: fetch character and location info
-												sighting['characterId'],
-												sighting['locationId'],
-												sighting['timestamp'],
-												sighting['description']
+												'timestamp',
+												'description'
 											].forEach(field => row.appendChild((cell => {
-												cell.innerText = field;
+												cell.innerText = sighting[field];
 												return cell;
 											})(document.createElement('td'))))
 											return row;
